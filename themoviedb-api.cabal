@@ -1,0 +1,29 @@
+Name:              themoviedb-api
+Version:           0.1.0
+Synopsis:          Haskell API bindings for http://themoviedb.org
+Description:
+        This library provides functions for retrieving metadata from
+        The Movie DB API.
+
+Homepage: https://github.com/pjones/themoviedb-api.git
+License:           MIT
+License-file:      LICENSE
+Author:            Peter Jones
+Maintainer:        pjones@pmade.com
+Build-type:        Simple
+Category:          API
+
+Cabal-version:     >= 1.6
+Library
+  Exposed-modules: Network.TheMovieDB.API
+  Other-modules:
+  Build-depends:   base          == 4.*
+                  ,network       == 2.3.*
+                  ,HTTP          == 4000.2.*
+                  ,utf8-string   == 0.3.7
+                  ,aeson         == 0.6.*
+                  ,bytestring    == 0.10.*
+
+source-repository head
+  type:     git
+  location: git://github.com/pjones/themoviedb-api.git
