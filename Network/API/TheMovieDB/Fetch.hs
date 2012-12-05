@@ -22,15 +22,15 @@ import Data.Aeson
 --   either an APIError or a Movie.
 fetchErr :: APIKey -> MovieID -> IO (Either APIError Movie)
 fetchErr key movieID =
-  do r <- apiGET key ("movie/" ++ show movieID) []
-     case r of
-       Left err   -> return $ Left err
-       Right body -> return $ maybe (Left parseError) Right $ decode body
+  do response <- apiGET key ("movie/" ++ show movieID) []
+     return $ case response of
+       Left err   -> Left err
+       Right body -> maybe (Left parseError) Right $ decode body
   where parseError = ParseError "failed to parse movie JSON"
 
 -- | Fetch the metadata for the movie with the given ID and fail if
 --   any errors are encountered along the way.
 fetch :: APIKey -> MovieID -> IO Movie
 fetch key movieID =
-  do r <- fetchErr key movieID
-     either (fail . show) return r
+  do movie <- fetchErr key movieID
+     either (fail . show) return movie

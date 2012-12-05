@@ -22,7 +22,11 @@ import Data.Aeson
 import Control.Applicative
 
 type SearchTerm = String
-data SearchResults = SearchResults [Movie]
+
+newtype SearchResults =
+  SearchResults {searchResults :: [Movie]}
+  deriving (Eq, Show)
+
 
 instance FromJSON SearchResults where
   parseJSON (Object v) =
@@ -34,8 +38,9 @@ instance FromJSON SearchResults where
 moviesFromSearchJSON :: BodyContent -> Either APIError [Movie]
 moviesFromSearchJSON body =
   case decode body of
-    Nothing     -> Left $ ParseError ("failed to parse search results" ++ show body)
-    Just (SearchResults m) -> Right m
+    Nothing -> Left parseError
+    Just sr -> Right (searchResults sr)
+  where parseError = ParseError ("failed to parse search results" ++ show body)
 
 --
 searchErr :: APIKey -> SearchTerm -> IO (Either APIError [Movie])
