@@ -1,25 +1,33 @@
-name:                themoviedb-api
-version:             0.1.0.0
-synopsis:            Haskell API bindings for http://themoviedb.org
-description:         This library provides functions for retrieving
-                     metadata from TheMovieDB.org API.
-homepage:            http://github.com/pjones/themoviedb-api
-license:             MIT
-license-file:        LICENSE.md
-author:              Peter Jones
-maintainer:          pjones@pmade.com
--- copyright:           
-category:            Network
-build-type:          Simple
-cabal-version:       >=1.8
+-- http://www.haskell.org/cabal/users-guide/developing-packages.html
+name:          themoviedb
+version:       0.1.0.0
+synopsis:      Haskell API bindings for http://themoviedb.org
+description:   This library provides functions for retrieving
+               metadata from TheMovieDB.org API.
+homepage:      http://github.com/pjones/themoviedb
+-- bug-reports:
+license:       MIT
+license-file:  LICENSE
+author:        Peter Jones
+maintainer:    Peter Jones <pjones@pmade.com>
+copyright:     Copyright: (c) 2012 Peter Jones <pjones@pmade.com>
+category:      Network, API
+stability:     experimental
+build-type:    Simple
+cabal-version: >=1.8
 
 library
-  exposed-modules:     Network.API.TheMovieDB
-  other-modules:       Network.API.TheMovieDB.Search, 
-                       Network.API.TheMovieDB.HTTP, 
-                       Network.API.TheMovieDB.Types
-  build-depends:       base ==4.3.*, 
-                       HTTP ==4000.2.*, 
-                       network ==2.3.*, 
-                       bytestring ==0.9.*, 
-                       aeson ==0.6.*
+  exposed-modules: Network.API.TheMovieDB
+  other-modules:   Network.API.TheMovieDB.Search, 
+                   Network.API.TheMovieDB.HTTP, 
+                   Network.API.TheMovieDB.Types
+  build-depends: 
+    base ==4.3.*, 
+    HTTP ==4000.2.*, 
+    network ==2.3.*, 
+    bytestring ==0.9.*, 
+    aeson ==0.6.*
+
+source-repository head
+  type: git
+  location: git://github.com/pjones/themoviedb.git                     
