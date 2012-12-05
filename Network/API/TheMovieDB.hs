@@ -13,11 +13,16 @@ module Network.API.TheMovieDB
        , APIError
        , SearchTerm
        , ReleaseDate(..)
+       , GenreID
        , Genre(..)
+       , MovieID
        , Movie(..)
+       , fetchErr
+       , fetch
        , searchErr
        , search
        ) where
 
 import Network.API.TheMovieDB.Types
+import Network.API.TheMovieDB.Fetch
 import Network.API.TheMovieDB.Search

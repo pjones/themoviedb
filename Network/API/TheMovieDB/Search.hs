@@ -39,16 +39,12 @@ moviesFromSearchJSON body =
 
 --
 searchErr :: APIKey -> SearchTerm -> IO (Either APIError [Movie])
-searchErr key term =
-  do result <- apiGET key "search/movie" [("query", term)]
-     case result of
-       Left err   -> return $ Left $ NetworkError $ show err
-       Right body -> return $ moviesFromSearchJSON body
+searchErr key term = do
+  result <- apiGET key "search/movie" [("query", term)]
+  return $ either (Left . NetworkError . show) moviesFromSearchJSON result
 
 --
 search :: APIKey -> SearchTerm -> IO [Movie]
-search key term =
-  do result <- searchErr key term
-     case result of
-       Left e  -> return []
-       Right m -> return m
+search key term = do
+  result <- searchErr key term
+  either (const $ return []) return result

@@ -14,7 +14,9 @@ module Network.API.TheMovieDB.Types
        ( APIKey
        , APIError(..)
        , ReleaseDate(..)
+       , GenreID
        , Genre(..)
+       , MovieID
        , Movie(..)
        ) where
 
@@ -47,21 +49,27 @@ instance FromJSON ReleaseDate where
       _      -> fail "could not parse release_date"
   parseJSON v = typeMismatch "ReleaseDate" v
 
+-- | Type for representing unique genre IDs.
+type GenreID = Int
+
 -- | Metadata for a genre.
 data Genre =
   Genre
-  { genreID   :: Int    -- ^ TheMovieDB unique ID.
-  , genreName :: String -- ^ The name of the genre.
+  { genreID   :: GenreID -- ^ TheMovieDB unique ID.
+  , genreName :: String  -- ^ The name of the genre.
   } deriving (Eq, Show)
 
 instance FromJSON Genre where
   parseJSON (Object v) = Genre <$> v .: "id" <*> v .: "name"
   parseJSON v          = typeMismatch "Genre" v
 
+-- | Type for representing unique movie IDs.
+type MovieID = Int
+
 -- | Metadata for a movie.
 data Movie =
   Movie
-  { movieID          :: Int         -- ^ TheMovieDB unique ID.
+  { movieID          :: MovieID     -- ^ TheMovieDB unique ID.
   , movieTitle       :: String      -- ^ The name/title of the movie.
   , movieOverview    :: String      -- ^ Short plot summary.
   , movieGenres      :: [Genre]     -- ^ List of genre names.
@@ -72,16 +80,16 @@ data Movie =
 
 instance FromJSON Movie where
   parseJSON (Object v) = do
-    genresMaybe <- v .:? "genres"
-    genres <- case genresMaybe of
-      Just a -> parseJSON a
-      _      -> return []
+    genres <- maybe (pure []) parseJSON <$> (v .:? "genres")
+    poster <- maybe (pure defaultPoster) posterURL <$> (v .:? "poster_path")
     Movie <$> v .:  "id"
           <*> v .:  "title"
           <*> v .:? "overview"     .!= ""
-          <*> return genres
+          <*> genres
           <*> v .:? "popularity"   .!= 0.0
-          <*> v .:? "poster_path"  .!= ""
+          <*> poster
           <*> v .:? "release_date" .!= defaultDate
-    where defaultDate = ReleaseDate $ ModifiedJulianDay 0
+    where defaultDate   = ReleaseDate $ ModifiedJulianDay 0
+          defaultPoster = "" :: String
+          posterURL p   = parseJSON p
   parseJSON _ = empty
