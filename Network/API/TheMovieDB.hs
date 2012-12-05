@@ -12,6 +12,8 @@ module Network.API.TheMovieDB
        ( APIKey
        , APIError
        , SearchTerm
+       , ReleaseDate(..)
+       , Genre(..)
        , Movie(..)
        , searchErr
        , search
