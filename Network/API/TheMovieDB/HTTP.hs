@@ -8,7 +8,7 @@ modified, propagated, or distributed except according to the terms
 contained in the LICENSE file.
 
 -}
-module Network.TheMovieDB.API.HTTP
+module Network.API.TheMovieDB.HTTP
        ( APIPath
        , APIQuery
        , BodyContent

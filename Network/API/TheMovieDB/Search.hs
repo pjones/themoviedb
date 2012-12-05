@@ -10,13 +10,16 @@ modified, propagated, or distributed except according to the terms
 contained in the LICENSE file.
 
 -}
-module Network.TheMovieDB.API.Search
-       ( searchErr
+module Network.API.TheMovieDB.Search
+       ( SearchTerm
+       , searchErr
        , search
        ) where
 
 import Network.API.TheMovieDB.Types
 import Network.API.TheMovieDB.HTTP
+import Data.Aeson
+import Control.Applicative
 
 type SearchTerm = String
 data SearchResults = SearchResults [Movie]
