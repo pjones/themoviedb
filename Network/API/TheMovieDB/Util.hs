@@ -48,9 +48,6 @@ readFileMaybe n = do realName <- expandFile n
         skipSpace     = filter $ not . isSpace
 
 
--- FIXME: does sequence interfere with what I'm trying to do with
--- msum?  That is, return the first non-Nothing value.
---
 -- | Fetch an API 'Key' from the first of:
 --
 --     * @TMDB_KEY@ environment variable
