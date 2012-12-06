@@ -21,14 +21,11 @@ module Network.API.TheMovieDB.Types
        ) where
 
 -- Imports.
-import Data.Aeson
-import Data.Aeson.Types (typeMismatch)
-import Control.Applicative
-import System.Locale
-import Data.Time
-import Data.Text (unpack)
+import Network.API.TheMovieDB.Types.Genre
+import Network.API.TheMovieDB.Types.Movie
+import Network.API.TheMovieDB.Types.ReleaseDate
 
--- | Type for the API Key issued by TheMovieDB.
+-- | Type for the API key issued by TheMovieDB.
 type APIKey = String
 
 -- | Possible errors returned by the API.
@@ -37,59 +34,8 @@ data APIError
   | ParseError String   -- ^ Invalid or error response from the API.
   deriving (Eq, Show)
 
--- | Type wrapper for Day to parse a movie's release date.
-newtype ReleaseDate =
-  ReleaseDate {releaseDate :: Day}
-  deriving (Eq, Show)
-
-instance FromJSON ReleaseDate where
-  parseJSON (String t) =
-    case parseTime defaultTimeLocale "%Y-%m-%d" (unpack t) of
-      Just d -> pure $ ReleaseDate d
-      _      -> fail "could not parse release_date"
-  parseJSON v = typeMismatch "ReleaseDate" v
-
--- | Type for representing unique genre IDs.
-type GenreID = Int
-
--- | Metadata for a genre.
-data Genre =
-  Genre
-  { genreID   :: GenreID -- ^ TheMovieDB unique ID.
-  , genreName :: String  -- ^ The name of the genre.
-  } deriving (Eq, Show)
-
-instance FromJSON Genre where
-  parseJSON (Object v) = Genre <$> v .: "id" <*> v .: "name"
-  parseJSON v          = typeMismatch "Genre" v
-
--- | Type for representing unique movie IDs.
-type MovieID = Int
-
--- | Metadata for a movie.
-data Movie =
-  Movie
-  { movieID          :: MovieID     -- ^ TheMovieDB unique ID.
-  , movieTitle       :: String      -- ^ The name/title of the movie.
-  , movieOverview    :: String      -- ^ Short plot summary.
-  , movieGenres      :: [Genre]     -- ^ List of genre names.
-  , moviePopularity  :: Double      -- ^ Popularity ranking.
-  , moviePosterPath  :: String      -- ^ FIXME:
-  , movieReleaseDate :: ReleaseDate -- ^ Movie release date.
-  } deriving (Eq, Show)
-
-instance FromJSON Movie where
-  parseJSON (Object v) = do
-    genres <- maybe (pure []) parseJSON <$> (v .:? "genres")
-    poster <- maybe (pure defaultPoster) posterURL <$> (v .:? "poster_path")
-    Movie <$> v .:  "id"
-          <*> v .:  "title"
-          <*> v .:? "overview"     .!= ""
-          <*> genres
-          <*> v .:? "popularity"   .!= 0.0
-          <*> poster
-          <*> v .:? "release_date" .!= defaultDate
-    where defaultDate   = ReleaseDate $ ModifiedJulianDay 0
-          defaultPoster = "" :: String
-          posterURL p   = parseJSON p
-  parseJSON _ = empty
+-- data Config =
+--   Config
+--   { cfgAPIKey :: Key
+--   , cfgIOFunc :: Config -> Query -> IO (Either APIError BodyContent)
+--   }

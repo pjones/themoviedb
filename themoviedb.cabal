@@ -21,7 +21,11 @@ library
   other-modules:   Network.API.TheMovieDB.Fetch,
                    Network.API.TheMovieDB.Search,
                    Network.API.TheMovieDB.HTTP,
-                   Network.API.TheMovieDB.Types
+                   Network.API.TheMovieDB.Types,
+                   Network.API.TheMovieDB.Types.Genre,
+                   Network.API.TheMovieDB.Types.Movie,
+                   Network.API.TheMovieDB.Types.ReleaseDate
+
   build-depends:
     base ==4.3.*,
     old-locale ==1.0.*,
