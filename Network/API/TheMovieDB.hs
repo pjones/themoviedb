@@ -9,9 +9,10 @@ contained in the LICENSE file.
 
 -}
 module Network.API.TheMovieDB
-       ( APIKey
-       , APIError
-       , SearchTerm
+       ( Key
+       , Error
+       , SearchQuery
+       , Config()
        , ReleaseDate(..)
        , GenreID
        , Genre(..)
@@ -21,6 +22,7 @@ module Network.API.TheMovieDB
        , fetch
        , searchErr
        , search
+       , mkConfig
        ) where
 
 import Network.API.TheMovieDB.Types

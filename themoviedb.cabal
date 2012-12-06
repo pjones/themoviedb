@@ -22,6 +22,8 @@ library
                    Network.API.TheMovieDB.Search,
                    Network.API.TheMovieDB.HTTP,
                    Network.API.TheMovieDB.Types,
+                   Network.API.TheMovieDB.Types.API,
+                   Network.API.TheMovieDB.Types.Config,
                    Network.API.TheMovieDB.Types.Genre,
                    Network.API.TheMovieDB.Types.Movie,
                    Network.API.TheMovieDB.Types.ReleaseDate

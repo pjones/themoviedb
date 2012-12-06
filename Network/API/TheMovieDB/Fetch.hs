@@ -19,10 +19,10 @@ import Network.API.TheMovieDB.HTTP
 import Data.Aeson
 
 -- | Fetch the metadata for the movie with the given ID.  Returns
---   either an APIError or a Movie.
-fetchErr :: APIKey -> MovieID -> IO (Either APIError Movie)
-fetchErr key movieID =
-  do response <- apiGET key ("movie/" ++ show movieID) []
+--   either an Error or a Movie.
+fetchErr :: Config -> MovieID -> IO (Either Error Movie)
+fetchErr c m =
+  do response <- (ioFunc c) (apiKey c) ("movie/" ++ show m) []
      return $ case response of
        Left err   -> Left err
        Right body -> maybe (Left parseError) Right $ decode body
@@ -30,7 +30,7 @@ fetchErr key movieID =
 
 -- | Fetch the metadata for the movie with the given ID and fail if
 --   any errors are encountered along the way.
-fetch :: APIKey -> MovieID -> IO Movie
-fetch key movieID =
-  do movie <- fetchErr key movieID
+fetch :: Config -> MovieID -> IO Movie
+fetch c m =
+  do movie <- fetchErr c m
      either (fail . show) return movie

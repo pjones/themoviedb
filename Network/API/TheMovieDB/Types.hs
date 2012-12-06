@@ -11,31 +11,19 @@ contained in the LICENSE file.
 
 -}
 module Network.API.TheMovieDB.Types
-       ( APIKey
-       , APIError(..)
+       ( Key
+       , Config(..)
+       , Error(..)
        , ReleaseDate(..)
        , GenreID
        , Genre(..)
        , MovieID
        , Movie(..)
+       , mkConfig
        ) where
 
--- Imports.
+import Network.API.TheMovieDB.Types.API
+import Network.API.TheMovieDB.Types.Config
 import Network.API.TheMovieDB.Types.Genre
 import Network.API.TheMovieDB.Types.Movie
 import Network.API.TheMovieDB.Types.ReleaseDate
-
--- | Type for the API key issued by TheMovieDB.
-type APIKey = String
-
--- | Possible errors returned by the API.
-data APIError
-  = NetworkError String -- ^ Network or HTTP error.
-  | ParseError String   -- ^ Invalid or error response from the API.
-  deriving (Eq, Show)
-
--- data Config =
---   Config
---   { cfgAPIKey :: Key
---   , cfgIOFunc :: Config -> Query -> IO (Either APIError BodyContent)
---   }
