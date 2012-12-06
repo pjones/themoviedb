@@ -17,7 +17,8 @@ build-type:    Simple
 cabal-version: >=1.8
 
 library
-  exposed-modules: Network.API.TheMovieDB
+  exposed-modules: Network.API.TheMovieDB,
+                   Network.API.TheMovieDB.Util
   other-modules:   Network.API.TheMovieDB.Fetch,
                    Network.API.TheMovieDB.Search,
                    Network.API.TheMovieDB.HTTP,
@@ -36,7 +37,8 @@ library
     network ==2.3.*,
     bytestring ==0.9.*,
     text ==0.11.*,
-    aeson ==0.6.*
+    aeson ==0.6.*,
+    unix ==2.4.*
 
 source-repository head
   type: git
