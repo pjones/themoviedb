@@ -1,5 +1,3 @@
-{-# LANGUAGE DeriveDataTypeable #-}
-
 {-
 
 This file is part of the Haskell package themoviedb. It is subject to
