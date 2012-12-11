@@ -10,7 +10,7 @@ contained in the LICENSE file.
 -}
 module Network.API.TheMovieDB.Util
        ( loadKey
-       , loadConfig
+       , loadContext
        ) where
 
 import Control.Monad (liftM, msum)
@@ -72,7 +72,7 @@ loadKey = liftM msum . sequence $ [env, xdgConfig, config, home]
                          Just d  -> readFileMaybe (d ++ "/tmdbkey")
 
 -- | Uses 'loadKey' to fetch an API 'Key' and wrap it into a default
---   'Config' using 'mkConfig'.
-loadConfig :: IO (Maybe Config)
-loadConfig = do key <- loadKey
-                return $ maybe Nothing (Just . mkConfig) key
+--   'Context' using 'mkContext'.
+loadContext :: IO (Maybe Context)
+loadContext = do key <- loadKey
+                 return $ maybe Nothing (Just . mkContext) key

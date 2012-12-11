@@ -10,18 +10,21 @@ contained in the LICENSE file.
 -}
 module Network.API.TheMovieDB.Types
        ( Key
-       , Config(..)
+       , Context(..)
        , Error(..)
        , ReleaseDate(..)
+       , Configuration(..)
        , GenreID
        , Genre(..)
        , MovieID
        , Movie(..)
-       , mkConfig
+       , moviePosterURLs
+       , mkContext
        ) where
 
 import Network.API.TheMovieDB.Types.API
-import Network.API.TheMovieDB.Types.Config
+import Network.API.TheMovieDB.Types.Configuration
+import Network.API.TheMovieDB.Types.Context
 import Network.API.TheMovieDB.Types.Genre
 import Network.API.TheMovieDB.Types.Movie
 import Network.API.TheMovieDB.Types.ReleaseDate

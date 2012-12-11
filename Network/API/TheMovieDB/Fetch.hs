@@ -13,14 +13,13 @@ module Network.API.TheMovieDB.Fetch
        , fetch
        ) where
 
--- Imports.
 import Network.API.TheMovieDB.Types
 import Network.API.TheMovieDB.HTTP
 import Data.Aeson
 
 -- | Fetch the metadata for the movie with the given ID.  Returns
 --   either an Error or a Movie.
-fetchErr :: Config -> MovieID -> IO (Either Error Movie)
+fetchErr :: Context -> MovieID -> IO (Either Error Movie)
 fetchErr c m =
   do response <- (ioFunc c) (apiKey c) ("movie/" ++ show m) []
      return $ case response of
@@ -30,7 +29,7 @@ fetchErr c m =
 
 -- | Fetch the metadata for the movie with the given ID and fail if
 --   any errors are encountered along the way.
-fetch :: Config -> MovieID -> IO Movie
+fetch :: Context -> MovieID -> IO Movie
 fetch c m =
   do movie <- fetchErr c m
      either (fail . show) return movie

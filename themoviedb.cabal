@@ -19,12 +19,14 @@ description:   This library provides functions for retrieving
 library
   exposed-modules: Network.API.TheMovieDB,
                    Network.API.TheMovieDB.Util
-  other-modules:   Network.API.TheMovieDB.Fetch,
+  other-modules:   Network.API.TheMovieDB.Config,
+                   Network.API.TheMovieDB.Fetch,
                    Network.API.TheMovieDB.Search,
                    Network.API.TheMovieDB.HTTP,
                    Network.API.TheMovieDB.Types,
                    Network.API.TheMovieDB.Types.API,
-                   Network.API.TheMovieDB.Types.Config,
+                   Network.API.TheMovieDB.Types.Configuration,
+                   Network.API.TheMovieDB.Types.Context,
                    Network.API.TheMovieDB.Types.Genre,
                    Network.API.TheMovieDB.Types.Movie,
                    Network.API.TheMovieDB.Types.ReleaseDate

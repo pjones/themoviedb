@@ -11,10 +11,11 @@ contained in the LICENSE file.
 module Main where
 
 import Control.Monad (when)
+import Data.List (intercalate)
 import Data.Maybe (isNothing, fromJust)
 import Data.Time (toGregorian, formatTime)
 import Network.API.TheMovieDB
-import Network.API.TheMovieDB.Util (loadConfig)
+import Network.API.TheMovieDB.Util (loadContext)
 import System.Environment (getArgs)
 import System.Exit (exitFailure)
 import System.Locale (defaultTimeLocale)
@@ -28,24 +29,26 @@ printMovieHeader m = printf "%8d: %s (%s)\n" (movieID m) (movieTitle m) year
 
 -- Print more detailed information for a 'Movie'.
 printMovieDetails :: Movie -> IO ()
-printMovieDetails m = do putStrLn $ moviePosterPath m
-                         putStrLn $ "Popularity: " ++ show (moviePopularity m)
-                         putStrLn $ unwords $ map genreName (movieGenres m)
+printMovieDetails m = do putStrLn $ "Popularity: " ++ show (moviePopularity m)
+                         putStrLn $ strJoin $ map genreName (movieGenres m)
                          putStrLn "-- "
                          putStrLn $ movieOverview m
+  where strJoin = intercalate ", "
 
 -- Well, of course, it's main!
 main :: IO ()
 main = do args <- getArgs
-          configM <- loadConfig
-          when (isNothing configM) $ error "failed to load API key"
-          let config = fromJust configM
+          contextM <- loadContext
+          when (isNothing contextM) $ error "failed to load API key"
+          let context = fromJust contextM
+          cfg <- config context
           case args of
-            ["search", query] -> do movies <- search config query
+            ["search", query] -> do movies <- search context query
                                     mapM_ printMovieHeader movies
 
-            ["fetch", mID]    -> do movie <- fetch config $ read mID
+            ["fetch", mID]    -> do movie <- fetch context (read mID)
                                     printMovieHeader movie
+                                    mapM_ putStrLn $ moviePosterURLs cfg movie
                                     printMovieDetails movie
 
             _                 -> do putStrLn usage

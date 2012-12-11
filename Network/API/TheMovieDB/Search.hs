@@ -50,13 +50,13 @@ moviesFromSearchJSON body =
 --   The movies returned will not have all their fields, to get a
 --   complete record you'll need to follow this call up with a call to
 --   'fetchErr' or 'fetch'.
-searchErr :: Config -> SearchQuery -> IO (Either Error [Movie])
+searchErr :: Context -> SearchQuery -> IO (Either Error [Movie])
 searchErr c q = do
   result <- (ioFunc c) (apiKey c) "search/movie" [("query", q)]
   return $ either (Left . NetworkError . show) moviesFromSearchJSON result
 
 -- | Similar to 'searchErr' except the results are a list of movies
 --   and in the case of an error the list will be empty.
-search :: Config -> SearchQuery -> IO [Movie]
+search :: Context -> SearchQuery -> IO [Movie]
 search c q = do result <- searchErr c q
                 either (const $ return []) return result

@@ -12,19 +12,24 @@ module Network.API.TheMovieDB
        ( Key
        , Error
        , SearchQuery
-       , Config()
+       , Context()
        , ReleaseDate(..)
+       , Configuration()
        , GenreID
        , Genre(..)
        , MovieID
        , Movie(..)
+       , moviePosterURLs
+       , configErr
+       , config
        , fetchErr
        , fetch
        , searchErr
        , search
-       , mkConfig
+       , mkContext
        ) where
 
 import Network.API.TheMovieDB.Types
+import Network.API.TheMovieDB.Config
 import Network.API.TheMovieDB.Fetch
 import Network.API.TheMovieDB.Search

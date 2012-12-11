@@ -8,23 +8,22 @@ modified, propagated, or distributed except according to the terms
 contained in the LICENSE file.
 
 -}
-module Network.API.TheMovieDB.Types.Config
-       ( Config(..)
-       , mkConfig
+module Network.API.TheMovieDB.Types.Context
+       ( Context(..)
+       , mkContext
        ) where
 
 import Network.API.TheMovieDB.Types.API
 import Network.API.TheMovieDB.HTTP
 
--- | Configuration data that needs to be given to the API functions.
---   Use the 'mkConfig' function to turn an API 'Key' into a 'Config'.
-data Config =
-  Config
+-- | Data that needs to be given to the API functions.  Use the
+-- 'mkContext' function to turn an API 'Key' into a 'Context'.
+data Context = Context
   { apiKey :: Key
   , ioFunc :: IOFunc
   }
 
--- | Turns an API 'Key' into a 'Config' so that you can call the API
---   functions such as 'fetch' and 'search'.
-mkConfig :: Key -> Config
-mkConfig key = Config key apiGET
+-- | Turns an API 'Key' into a 'Context' so that you can call the API
+-- functions such as 'fetch' and 'search'.
+mkContext :: Key -> Context
+mkContext key = Context key apiGET
