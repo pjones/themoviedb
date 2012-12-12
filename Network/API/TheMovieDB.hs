@@ -10,10 +10,9 @@ contained in the LICENSE file.
 -}
 module Network.API.TheMovieDB
        ( Key
-       , Error
+       , Error(..)
        , SearchQuery
        , Context()
-       , ReleaseDate(..)
        , Configuration()
        , GenreID
        , Genre(..)

@@ -11,18 +11,16 @@ contained in the LICENSE file.
 
 -}
 module Network.API.TheMovieDB.Types.Movie
-       ( MovieID
-       , Movie(..)
-       , moviePosterURLs
-       ) where
+       (MovieID, Movie(..), moviePosterURLs) where
 
 import Control.Applicative
+import Control.Monad (liftM)
 import Data.Aeson
 import Data.Aeson.Types (typeMismatch)
-import Data.Time
-import Network.API.TheMovieDB.Types.Configuration
-import Network.API.TheMovieDB.Types.Genre
-import Network.API.TheMovieDB.Types.ReleaseDate
+import Data.Time (Day(..))
+import Network.API.TheMovieDB.Types.Configuration (Configuration(..))
+import Network.API.TheMovieDB.Types.Genre (Genre(..))
+import Network.API.TheMovieDB.Types.ReleaseDate (ReleaseDate(..))
 
 -- | Type for representing unique movie IDs.
 type MovieID = Int
@@ -39,22 +37,19 @@ data Movie = Movie
   , movieGenres      :: [Genre]     -- ^ List of genre names.
   , moviePopularity  :: Double      -- ^ Popularity ranking.
   , moviePosterPath  :: String      -- ^ Incomplete URL for poster image.
-  , movieReleaseDate :: ReleaseDate -- ^ Movie release date.
+  , movieReleaseDate :: Day         -- ^ Movie release date.
   } deriving (Eq, Show)
 
 instance FromJSON Movie where
-  parseJSON (Object v) = do
-    genres <- maybe (pure []) parseJSON <$> (v .:? "genres")
-    poster <- maybe (pure defaultPoster) parseJSON <$> (v .:? "poster_path")
+  parseJSON (Object v) =
     Movie <$> v .:  "id"
           <*> v .:  "title"
-          <*> v .:? "overview"     .!= ""
-          <*> genres
-          <*> v .:? "popularity"   .!= 0.0
-          <*> poster
-          <*> v .:? "release_date" .!= defaultDate
-    where defaultDate   = ReleaseDate $ ModifiedJulianDay 0
-          defaultPoster = "" :: String
+          <*> v .:? "overview"    .!= ""
+          <*> v .:? "genres"      .!= []
+          <*> v .:? "popularity"  .!= 0.0
+          <*> v .:? "poster_path" .!= ""
+          <*> parseDate
+    where parseDate = liftM releaseDate (v .: "release_date")
   parseJSON _ = empty
 
 -- | Return a list of URLs for all possible movie posters.

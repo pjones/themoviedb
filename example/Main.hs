@@ -24,8 +24,7 @@ import Text.Printf (printf)
 -- Simple banner style printing of a 'Movie'
 printMovieHeader :: Movie -> IO ()
 printMovieHeader m = printf "%8d: %s (%s)\n" (movieID m) (movieTitle m) year
-  where year = formatTime defaultTimeLocale "%Y" date
-        date = releaseDate $ (movieReleaseDate m)
+  where year = formatTime defaultTimeLocale "%Y" $ movieReleaseDate m
 
 -- Print more detailed information for a 'Movie'.
 printMovieDetails :: Movie -> IO ()

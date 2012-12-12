@@ -8,11 +8,7 @@ modified, propagated, or distributed except according to the terms
 contained in the LICENSE file.
 
 -}
-module Network.API.TheMovieDB.Util
-       ( loadKey
-       , loadContext
-       ) where
-
+module Network.API.TheMovieDB.Util (loadKey, loadContext) where
 import Control.Monad (liftM, msum)
 import Data.Char (isSpace)
 import Network.API.TheMovieDB.HTTP
@@ -59,8 +55,8 @@ readFileMaybe n = do realName <- expandFile n
 --
 --     * @~/.tmdbkey@ file
 --
---   If the key can't be loaded from any of those places the result
---   will be Nothing.
+-- If the key can't be loaded from any of those places the result will
+-- be Nothing.
 loadKey :: IO (Maybe Key)
 loadKey = liftM msum . sequence $ [env, xdgConfig, config, home]
   where env       = getEnvMaybe "TMDB_KEY"
@@ -72,7 +68,6 @@ loadKey = liftM msum . sequence $ [env, xdgConfig, config, home]
                          Just d  -> readFileMaybe (d ++ "/tmdbkey")
 
 -- | Uses 'loadKey' to fetch an API 'Key' and wrap it into a default
---   'Context' using 'mkContext'.
+-- 'Context' using 'mkContext'.
 loadContext :: IO (Maybe Context)
-loadContext = do key <- loadKey
-                 return $ maybe Nothing (Just . mkContext) key
+loadContext = liftM (maybe Nothing (Just . mkContext)) loadKey

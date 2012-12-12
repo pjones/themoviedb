@@ -8,11 +8,7 @@ modified, propagated, or distributed except according to the terms
 contained in the LICENSE file.
 
 -}
-module Network.API.TheMovieDB.Types.Context
-       ( Context(..)
-       , mkContext
-       ) where
-
+module Network.API.TheMovieDB.Types.Context (Context(..), mkContext) where
 import Network.API.TheMovieDB.Types.API
 import Network.API.TheMovieDB.HTTP
 

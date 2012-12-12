@@ -10,11 +10,7 @@ modified, propagated, or distributed except according to the terms
 contained in the LICENSE file.
 
 -}
-module Network.API.TheMovieDB.Types.Genre
-       ( GenreID
-       , Genre(..)
-       ) where
-
+module Network.API.TheMovieDB.Types.Genre (GenreID, Genre(..)) where
 import Control.Applicative
 import Data.Aeson
 import Data.Aeson.Types (typeMismatch)
@@ -23,8 +19,7 @@ import Data.Aeson.Types (typeMismatch)
 type GenreID = Int
 
 -- | Metadata for a genre.
-data Genre =
-  Genre
+data Genre = Genre
   { genreID   :: GenreID -- ^ TheMovieDB unique ID.
   , genreName :: String  -- ^ The name of the genre.
   } deriving (Eq, Show)

@@ -19,8 +19,8 @@ import Data.Aeson
 import Data.Aeson.Types (typeMismatch)
 
 -- | TheMovieDB API tries to preserve bandwidth by omitting
---   information like full URLs for images from most of the API calls
---   which requires that you fetch that information separately.
+-- information like full URLs for images from most of the API calls
+-- which requires that you fetch such information separately.
 data Configuration = Configuration
   { cfgImageBaseURL    :: String   -- ^ The base URL for images.
   , cfgImageSecBaseURL :: String   -- ^ Base URL for secure images.
@@ -32,5 +32,6 @@ instance FromJSON Configuration where
     Configuration <$> images  "base_url"
                   <*> images  "secure_base_url"
                   <*> imagesM "poster_sizes" []
-    where images key      = (v .: "images") >>= (\x -> x .: key)
+    where images key      = (v .: "images") >>= (\x -> x .:  key)
           imagesM key def = (v .: "images") >>= (\x -> x .:? key .!= def)
+  parseJSON _ = empty
