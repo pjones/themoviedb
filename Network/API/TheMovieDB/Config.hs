@@ -8,26 +8,15 @@ modified, propagated, or distributed except according to the terms
 contained in the LICENSE file.
 
 -}
-module Network.API.TheMovieDB.Config
-       ( configErr
-       , config
-       ) where
-
+module Network.API.TheMovieDB.Config (configErr, config) where
+import Network.API.TheMovieDB.Generic
 import Network.API.TheMovieDB.Types
-import Network.API.TheMovieDB.HTTP
-import Data.Aeson
 
 -- | Fetch the API configuration information such as base URLs for
 -- movie posters.  Results in either an error or a 'Configuration'.
 configErr :: Context -> IO (Either Error Configuration)
-configErr c = do response <- (ioFunc c) (apiKey c) "configuration" []
-                 return $ case response of
-                   Left err   -> Left err
-                   Right body -> maybe (Left parseError) Right $ decode body
-  where parseError = ParseError "failed to parse configuration JSON"
-
+configErr ctx = getAndParse ctx "configuration" []
 
 -- | Fetch the API configuration information or fail.
 config :: Context -> IO Configuration
-config c = do cfg <- configErr c
-              either (fail . show) return cfg
+config ctx = getOrFail $ configErr ctx

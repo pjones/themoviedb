@@ -10,6 +10,7 @@ contained in the LICENSE file.
 -}
 module Network.API.TheMovieDB.Types.API
        ( Key
+       , SearchQuery
        , Body
        , Response
        , Path
@@ -22,6 +23,9 @@ import qualified Data.ByteString.Lazy as B
 
 -- | Type for the API key issued by TheMovieDB.
 type Key = String
+
+-- | A search query for TheMovieDB API.
+type SearchQuery = String
 
 -- | Possible errors returned by the API.
 data Error

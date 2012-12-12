@@ -8,28 +8,16 @@ modified, propagated, or distributed except according to the terms
 contained in the LICENSE file.
 
 -}
-module Network.API.TheMovieDB.Fetch
-       ( fetchErr
-       , fetch
-       ) where
-
+module Network.API.TheMovieDB.Fetch (fetchErr, fetch) where
+import Network.API.TheMovieDB.Generic
 import Network.API.TheMovieDB.Types
-import Network.API.TheMovieDB.HTTP
-import Data.Aeson
 
 -- | Fetch the metadata for the movie with the given ID.  Returns
---   either an Error or a Movie.
+-- either an Error or a Movie.
 fetchErr :: Context -> MovieID -> IO (Either Error Movie)
-fetchErr c m =
-  do response <- (ioFunc c) (apiKey c) ("movie/" ++ show m) []
-     return $ case response of
-       Left err   -> Left err
-       Right body -> maybe (Left parseError) Right $ decode body
-  where parseError = ParseError "failed to parse movie JSON"
+fetchErr ctx mid = getAndParse ctx ("movie/" ++ show mid) []
 
 -- | Fetch the metadata for the movie with the given ID and fail if
---   any errors are encountered along the way.
+-- any errors are encountered along the way.
 fetch :: Context -> MovieID -> IO Movie
-fetch c m =
-  do movie <- fetchErr c m
-     either (fail . show) return movie
+fetch ctx mid = getOrFail $ fetchErr ctx mid

@@ -31,7 +31,7 @@ mkAPIRequest key path params =
         headers = [H.Header H.HdrAccept "application/json"]
         request = H.mkRequest H.GET
 
--- | Build a URL and do an HTTP GET to TheMovieDB.
+-- Build a URL and do an HTTP GET to TheMovieDB.
 apiGET :: Key -> Path -> Params -> IO Response
 apiGET key path params =
   do result <- H.simpleHTTP $ mkAPIRequest key path params

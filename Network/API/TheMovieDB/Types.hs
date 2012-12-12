@@ -10,6 +10,7 @@ contained in the LICENSE file.
 -}
 module Network.API.TheMovieDB.Types
        ( Key
+       , SearchQuery
        , Context(..)
        , Error(..)
        , ReleaseDate(..)
