@@ -18,6 +18,7 @@ module Network.API.TheMovieDB
        , Genre(..)
        , MovieID
        , Movie(..)
+       , apiKey
        , moviePosterURLs
        , configErr
        , config
