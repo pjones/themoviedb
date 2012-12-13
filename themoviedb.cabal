@@ -57,6 +57,21 @@ executable tmdb
     HTTP,
     bytestring
 
+test-suite test
+  type: exitcode-stdio-1.0
+  main-is: Test/TheMovieDB.hs
+  build-depends:
+    base,
+    unix,
+    old-locale,
+    time,
+    text,
+    aeson,
+    network,
+    HTTP,
+    bytestring,
+    HUnit
+
 source-repository head
   type: git
   location: git://github.com/pjones/themoviedb.git
