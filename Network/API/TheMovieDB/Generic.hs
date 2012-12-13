@@ -19,8 +19,8 @@ getAndParse ctx path params =
   do httpResult <- (ioFunc ctx) (apiKey ctx) path params
      return $ case httpResult of
        Left  err  -> Left err
-       Right body -> maybe (Left $ parseErr body) Right $ decode body
-  where parseErr json = ParseError ("failed to parse JSON: " ++ show json)
+       Right body -> maybe (parseErr body) Right $ decode body
+  where parseErr j = Left $ ParseError ("failed to parse JSON: " ++ show j)
 
 -- Helper function to fail or return the right part of an either.
 getOrFail :: FromJSON a => IO (Either Error a) -> IO a

@@ -35,9 +35,7 @@ fetchSearchResults ctx query = getAndParse ctx "search/movie" [("query", query)]
 -- record you'll need to follow this call up with a call to 'fetchErr'
 -- or 'fetch'.
 searchErr :: Context -> SearchQuery -> IO (Either Error [Movie])
-searchErr ctx query = liftM output input
-  where output = either Left $ Right . searchResults
-        input  = fetchSearchResults ctx query
+searchErr ctx query = liftM (fmap searchResults) $ fetchSearchResults ctx query
 
 -- | Similar to 'searchErr' except the results are a list of movies
 --   and in the case of an error the list will be empty.
