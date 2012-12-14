@@ -15,8 +15,8 @@ import Network.API.TheMovieDB.HTTP
 -- | Data that needs to be given to the API functions.  Use the
 -- 'mkContext' function to turn an API 'Key' into a 'Context'.
 data Context = Context
-  { apiKey :: Key
-  , ioFunc :: IOFunc
+  { apiKey :: Key    -- ^ Extract an API 'Key' from a 'Context'.
+  , ioFunc :: IOFunc -- ^ The internal function that does the API IO.
   }
 
 -- | Turns an API 'Key' into a 'Context' so that you can call the API

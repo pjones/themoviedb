@@ -29,15 +29,21 @@ instance FromJSON SearchResults where
 fetchSearchResults :: Context -> SearchQuery -> IO (Either Error SearchResults)
 fetchSearchResults ctx query = getAndParse ctx "search/movie" [("query", query)]
 
--- | Search TheMovieDB using the given query string returning either
--- an error if something went wrong or a list of matching movies.  The
--- movies returned will not have all their fields, to get a complete
--- record you'll need to follow this call up with a call to 'fetchErr'
--- or 'fetch'.
+-- | Search TheMovieDB using the given query string and return either
+-- an 'Error' if something went wrong or a list of matching 'Movie's.
+--
+-- The movies returned will not have all their fields completely
+-- filled out, to get a complete record you'll need to follow this
+-- call up with a call to 'fetchErr' or 'fetch'.
 searchErr :: Context -> SearchQuery -> IO (Either Error [Movie])
 searchErr ctx query = liftM (fmap searchResults) $ fetchSearchResults ctx query
 
--- | Similar to 'searchErr' except the results are a list of movies
---   and in the case of an error the list will be empty.
+-- | Search TheMovieDB using the given query string and return a list
+-- of movies.  This function fails if there are any errors.  For a
+-- function that returns an error instead of failing see 'searchErr'.
+--
+-- The movies returned will not have all their fields completely
+-- filled out, to get a complete record you'll need to follow this
+-- call up with a call to 'fetchErr' or 'fetch'.
 search :: Context -> SearchQuery -> IO [Movie]
 search ctx query = getOrFail $ searchErr ctx query

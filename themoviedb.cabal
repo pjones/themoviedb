@@ -13,8 +13,9 @@ category:      Network, API
 stability:     experimental
 build-type:    Simple
 cabal-version: >=1.8
-description:   This library provides functions for retrieving
-               metadata from TheMovieDB.org API.
+description:   This library provides functions for retrieving metadata
+               from the <http://TheMovieDB.org> API.  Documentation
+               can be found in the "Network.API.TheMovieDB" module.
 
 library
   exposed-modules: Network.API.TheMovieDB,

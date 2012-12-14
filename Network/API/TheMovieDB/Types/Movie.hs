@@ -34,12 +34,13 @@ data Movie = Movie
   { movieID          :: MovieID -- ^ TheMovieDB unique ID.
   , movieTitle       :: String  -- ^ The name/title of the movie.
   , movieOverview    :: String  -- ^ Short plot summary.
-  , movieGenres      :: [Genre] -- ^ List of genre names.
+  , movieGenres      :: [Genre] -- ^ List of 'Genre's.
   , moviePopularity  :: Double  -- ^ Popularity ranking.
   , moviePosterPath  :: String  -- ^ Incomplete URL for poster image.
+                                -- See 'moviePosterURLs'.
   , movieReleaseDate :: Day     -- ^ Movie release date.
-  , movieAdult       :: Bool    -- ^ TheMovieDB adult flag.
-  , movieIMDB        :: String  -- ^ IMDB.com ID
+  , movieAdult       :: Bool    -- ^ TheMovieDB adult movie flag.
+  , movieIMDB        :: String  -- ^ IMDB.com ID.
   , movieRunTime     :: Int     -- ^ Movie length in minutes.
   } deriving (Eq, Show)
 

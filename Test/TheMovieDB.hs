@@ -1,3 +1,4 @@
+-- http://www.haskell.org/haskellwiki/HUnit_1.0_User%27s_Guide
 import Control.Monad (liftM, when)
 import qualified Data.ByteString.Lazy.Char8 as B
 import Network.API.TheMovieDB

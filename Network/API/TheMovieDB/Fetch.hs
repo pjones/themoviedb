@@ -13,11 +13,12 @@ import Network.API.TheMovieDB.Generic
 import Network.API.TheMovieDB.Types
 
 -- | Fetch the metadata for the movie with the given ID.  Returns
--- either an Error or a Movie.
+-- either an 'Error' or a 'Movie'.
 fetchErr :: Context -> MovieID -> IO (Either Error Movie)
 fetchErr ctx mid = getAndParse ctx ("movie/" ++ show mid) []
 
 -- | Fetch the metadata for the movie with the given ID and fail if
--- any errors are encountered along the way.
+-- any errors are encountered along the way.  For a function that
+-- returns an error instead of failing see 'fetchErr'.
 fetch :: Context -> MovieID -> IO Movie
 fetch ctx mid = getOrFail $ fetchErr ctx mid
