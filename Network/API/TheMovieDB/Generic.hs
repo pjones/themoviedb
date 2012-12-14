@@ -16,7 +16,7 @@ import Data.Aeson
 -- Helper function to fetch and decode JSON.
 getAndParse :: FromJSON a => Context -> Path -> Params -> IO (Either Error a)
 getAndParse ctx path params =
-  do httpResult <- (ioFunc ctx) (apiKey ctx) path params
+  do httpResult <- ioFunc ctx (apiKey ctx) path params
      return $ case httpResult of
        Left  err  -> Left err
        Right body -> maybe (parseErr body) Right $ decode body

@@ -33,10 +33,10 @@ data Configuration = Configuration
   }
 
 instance FromJSON Configuration where
-  parseJSON (Object v) = do
+  parseJSON (Object v) =
     Configuration <$> images  "base_url"
                   <*> images  "secure_base_url"
                   <*> imagesM "poster_sizes" []
-    where images key      = (v .: "images") >>= (\x -> x .:  key)
+    where images key      = (v .: "images") >>= (.:  key)
           imagesM key def = (v .: "images") >>= (\x -> x .:? key .!= def)
   parseJSON _ = empty

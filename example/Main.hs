@@ -43,7 +43,7 @@ main = do args <- getArgs
           let context = fromJust contextM
           cfg <- config context
           case args of
-            ["key"]           -> do putStrLn $ apiKey context
+            ["key"]           -> putStrLn $ apiKey context
 
             ["search", query] -> do movies <- search context query
                                     mapM_ printMovieHeader movies

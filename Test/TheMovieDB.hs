@@ -32,7 +32,7 @@ goodMovieFieldsTest = TestCase $ do
       assertEqual "movieID" 105 (movieID movie)
       assertEqual "movieTitle" "Back to the Future" (movieTitle movie)
       assertBool "movieOverview" $
-        "Eighties teenager" `isPrefixOf` (movieOverview) movie
+        "Eighties teenager" `isPrefixOf` movieOverview movie
       assertEqual "movieGenres" 4 (length $ movieGenres movie)
       assertEqual "moviePopularity" 80329.688 $ moviePopularity movie
       assertEqual "moviePosterPath" "/pTpxQB1N0waaSc3OSn0e9oc8kx9.jpg" $
@@ -63,5 +63,5 @@ unitTests = TestList
   ]
 
 main = do counts <- runTestTT unitTests
-          let bad = (errors counts) + (failures counts)
+          let bad = errors counts + failures counts
           when (bad > 0) exitFailure

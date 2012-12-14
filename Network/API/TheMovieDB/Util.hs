@@ -79,4 +79,4 @@ loadKey = liftM msum . sequence $ [env, xdgConfig, config, home]
 -- | Uses 'loadKey' to fetch an API 'Key' and wrap it into a default
 -- 'Context' using 'mkContext'.
 loadContext :: IO (Maybe Context)
-loadContext = liftM (maybe Nothing (Just . mkContext)) loadKey
+loadContext = liftM (fmap mkContext) loadKey
