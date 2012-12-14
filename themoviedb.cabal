@@ -3,7 +3,7 @@ name:          themoviedb
 version:       0.1.0.0
 synopsis:      Haskell API bindings for http://themoviedb.org
 homepage:      http://github.com/pjones/themoviedb
--- bug-reports:
+bug-reports:   http://github.com/pjones/themoviedb/issues
 license:       MIT
 license-file:  LICENSE
 author:        Peter Jones <pjones@pmade.com>
@@ -11,11 +11,22 @@ maintainer:    Peter Jones <pjones@pmade.com>
 copyright:     Copyright: (c) 2012 Peter Jones <pjones@pmade.com>
 category:      Network, API
 stability:     experimental
+tested-with:   GHC == 7.0.4
 build-type:    Simple
 cabal-version: >=1.8
 description:   This library provides functions for retrieving metadata
                from the <http://TheMovieDB.org> API.  Documentation
                can be found in the "Network.API.TheMovieDB" module.
+
+extra-source-files:
+  README.md
+  LICENSE
+  TODO.org
+  Test/config-good.json
+  Test/movie-bad.json
+  Test/movie-good.json
+  Test/search-good.json
+  Test/TheMovieDB.hs
 
 library
   exposed-modules: Network.API.TheMovieDB,

@@ -8,6 +8,15 @@ modified, propagated, or distributed except according to the terms
 contained in the LICENSE file.
 
 -}
+
+{- |
+
+This module provides some helper functions for loading an API 'Key' or
+complete 'Context' from the user's environment or from the file
+system.  Currently only POSIX systems are supported but patches are
+welcome!
+
+-}
 module Network.API.TheMovieDB.Util (loadKey, loadContext) where
 import Control.Monad (liftM, msum)
 import Data.Char (isSpace)
@@ -56,7 +65,7 @@ readFileMaybe n = do realName <- expandFile n
 --     * @~/.tmdbkey@ file
 --
 -- If the key can't be loaded from any of those places the result will
--- be Nothing.
+-- be 'Nothing'.
 loadKey :: IO (Maybe Key)
 loadKey = liftM msum . sequence $ [env, xdgConfig, config, home]
   where env       = getEnvMaybe "TMDB_KEY"
