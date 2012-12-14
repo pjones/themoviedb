@@ -12,14 +12,14 @@ request an API key from TheMovieDB.  Follow the directions on the
 
 See the [Network.API.TheMovieDB][] module for complete documentation.
 
-[Network.API.TheMovieDB]: ./Network/API/TheMovieDB.hs
+[Network.API.TheMovieDB]: https://github.com/pjones/themoviedb/blob/master/Network/API/TheMovieDB.hs
 
 # Example
 
 There's an [example][] application in the `example` directory.
 Surprising, I know.
 
-[example]: ./example/Main.hs
+[example]: https://github.com/pjones/themoviedb/blob/master/example/Main.hs
 
 # Warning
 
