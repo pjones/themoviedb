@@ -24,7 +24,7 @@ loadBadMovieFile _ _ _ =
 fakeNetworkError :: Key -> Path -> Params -> IO Response
 fakeNetworkError _ _ _ = return $ Left $ NetworkError "fake outage"
 
-goodMovieFields = TestCase $ do
+goodMovieFieldsTest = TestCase $ do
   result <- fetchErr (Context "" loadGoodMovieFile) 0
   case result of
     Left    err -> assertFailure $ show err
@@ -43,22 +43,23 @@ goodMovieFields = TestCase $ do
       assertEqual "movieIMDB" "tt0088763" $ movieIMDB movie
       assertEqual "movieRunTime" 116 $ movieRunTime movie
 
-badMovieJSON = TestCase $ do
+badMovieJSONTest = TestCase $ do
   result <- fetchErr (Context "" loadBadMovieFile) 0
   case result of
-    Left _ -> return ()
-    _      -> assertFailure "JSON should have been bad"
+    Left (ParseError e) -> return ()
+    _                   -> assertFailure "JSON should have been bad"
 
-shouldHaveNetworkError = TestCase $ do
+shouldHaveNetworkErrorTest = TestCase $ do
   result <- fetchErr (Context "" fakeNetworkError) 0
   case result of
     Left (NetworkError e) -> return ()
     _                     -> assertFailure "should have network error"
 
+-- Why can't this be automatic?
 unitTests = TestList
-  [ TestLabel "All movie fields are parsed" goodMovieFields
-  , TestLabel "Failure with bad JSON" badMovieJSON
-  , TestLabel "Propagate network failure" shouldHaveNetworkError
+  [ TestLabel "All movie fields are parsed" goodMovieFieldsTest
+  , TestLabel "Failure with bad JSON" badMovieJSONTest
+  , TestLabel "Propagate network failure" shouldHaveNetworkErrorTest
   ]
 
 main = do counts <- runTestTT unitTests
