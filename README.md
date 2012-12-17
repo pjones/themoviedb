@@ -5,7 +5,7 @@ metadata from [TheMovieDB][] API.  To use this library you need to
 request an API key from TheMovieDB.  Follow the directions on the
 [API][] page.
 
-[TheMovieDB]: http://themoviedb.com
+[TheMovieDB]: http://themoviedb.org
 [API]: http://docs.themoviedb.apiary.io
 
 # Documentation

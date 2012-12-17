@@ -12,7 +12,7 @@ contained in the LICENSE file.
 {- |
 
 This library provides some data types and functions for fetching movie
-metadata from <http://TheMovieDB.com>.  To use this library start by
+metadata from <http://TheMovieDB.org>.  To use this library start by
 requesting an API key from <http://docs.themoviedb.apiary.io>.
 
 A typical workflow while using this library is:
