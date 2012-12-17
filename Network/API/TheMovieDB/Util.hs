@@ -18,6 +18,8 @@ welcome!
 
 -}
 module Network.API.TheMovieDB.Util (loadKey, loadContext) where
+import Prelude hiding (catch)
+import Control.Exception (catch)
 import Control.Monad (liftM, msum)
 import Data.Char (isSpace)
 import Network.API.TheMovieDB.HTTP

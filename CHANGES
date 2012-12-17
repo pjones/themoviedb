@@ -1,0 +1,7 @@
+2012-12-17  Peter Jones  <pjones@pmade.com>
+
+	* Network/API/TheMovieDB/Util.hs: Use catch from Control.Exception
+	since it doesn't seem to be in the GHC 7.6.1 Prelude.
+
+	* themoviedb.cabal: Widen dependencies to compile with GHC 7.6.1.
+	Release version 0.1.0.1.
