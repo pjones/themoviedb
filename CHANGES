@@ -1,7 +1,12 @@
-2012-12-17  Peter Jones  <pjones@pmade.com>
+-*- org -*-
+#+title: Version History
+#+startup: showall
 
-	* Network/API/TheMovieDB/Util.hs: Use catch from Control.Exception
-	since it doesn't seem to be in the GHC 7.6.1 Prelude.
+* 0.1.0.1 (December 17, 2012)
+  
+  - Small internal changes to compile with GHC 7.6.1.
+  - Also compiles with GHC 7.4.2 and HP 2012.4.0.0.
 
-	* themoviedb.cabal: Widen dependencies to compile with GHC 7.6.1.
-	Release version 0.1.0.1.
+* 0.1.0.0 (December 14, 2012)
+
+  - Initial release.
