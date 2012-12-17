@@ -11,7 +11,7 @@ maintainer:    Peter Jones <pjones@pmade.com>
 copyright:     Copyright: (c) 2012 Peter Jones <pjones@pmade.com>
 category:      Network, API
 stability:     experimental
-tested-with:   GHC == 7.0.4, GHC == 7.6.1
+tested-with:   GHC == 7.0.4, GHC == 7.4.2, GHC == 7.6.1
 build-type:    Simple
 cabal-version: >=1.8
 description:   This library provides functions for retrieving metadata
