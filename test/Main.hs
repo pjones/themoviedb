@@ -15,11 +15,11 @@ import Test.HUnit
 
 loadGoodMovieFile :: Key -> Path -> Params -> IO Response
 loadGoodMovieFile _ _ _ =
-  liftM Right $ fmap B.pack (readFile "Test/movie-good.json")
+  liftM Right $ fmap B.pack (readFile "test/movie-good.json")
 
 loadBadMovieFile :: Key -> Path -> Params -> IO Response
 loadBadMovieFile _ _ _ =
-  liftM Right $ fmap B.pack (readFile "Test/movie-bad.json")
+  liftM Right $ fmap B.pack (readFile "test/movie-bad.json")
 
 fakeNetworkError :: Key -> Path -> Params -> IO Response
 fakeNetworkError _ _ _ = return $ Left $ NetworkError "fake outage"

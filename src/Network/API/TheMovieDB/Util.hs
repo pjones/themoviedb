@@ -17,18 +17,20 @@ system.  Currently only POSIX systems are supported but patches are
 welcome!
 
 -}
+--------------------------------------------------------------------------------
 module Network.API.TheMovieDB.Util (loadKey, loadContext) where
-import Prelude hiding (catch)
+
+--------------------------------------------------------------------------------
 import Control.Exception (catch)
 import Control.Monad (liftM, msum)
 import Data.Char (isSpace)
-import Network.API.TheMovieDB.HTTP
 import Network.API.TheMovieDB.Types
 import System.Environment (getEnv)
 import System.IO.Error (isDoesNotExistError)
 import System.Posix.Files
 import System.Posix.User
 
+--------------------------------------------------------------------------------
 -- Fetch the value of an environment variable without an exception.
 getEnvMaybe :: String -> IO (Maybe String)
 getEnvMaybe n = env `catch` err
@@ -37,13 +39,15 @@ getEnvMaybe n = env `catch` err
                   then return Nothing
                   else ioError e
 
+--------------------------------------------------------------------------------
 -- Expand @~@ at the front of a file path.
 expandFile :: FilePath -> IO FilePath
-expandFile ('~':rest) = do userID <- getEffectiveUserID
-                           entry  <- getUserEntryForID userID
-                           return  $ homeDirectory entry ++ rest
+expandFile ('~':rest) = do uid    <- getEffectiveUserID
+                           entry  <- getUserEntryForID uid
+                           return $ homeDirectory entry ++ rest
 expandFile dir        = return dir
 
+--------------------------------------------------------------------------------
 -- Return the contents of a file if it exists, otherwise Nothing.
 readFileMaybe :: FilePath -> IO (Maybe String)
 readFileMaybe n = do realName <- expandFile n
@@ -55,6 +59,7 @@ readFileMaybe n = do realName <- expandFile n
         skipSpace     = filter $ not . isSpace
 
 
+--------------------------------------------------------------------------------
 -- | Fetch an API 'Key' from the first of:
 --
 --     * @TMDB_KEY@ environment variable
@@ -78,6 +83,7 @@ loadKey = liftM msum . sequence $ [env, xdgConfig, config, home]
                          Nothing -> return Nothing
                          Just d  -> readFileMaybe (d ++ "/tmdbkey")
 
+--------------------------------------------------------------------------------
 -- | Uses 'loadKey' to fetch an API 'Key' and wrap it into a default
 -- 'Context' using 'mkContext'.
 loadContext :: IO (Maybe Context)

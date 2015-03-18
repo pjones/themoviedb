@@ -1,14 +1,14 @@
 ################################################################################
-.PHONEY: all clean test
+.PHONEY: all install restart
 
 ################################################################################
-all:
-	cabal-dev install
+# Set up the default target.
+all::
 
 ################################################################################
-clean:
-	cabal-dev clean
+CABAL_FLAGS = --enable-tests -fmaintainer
+CABAL_DEP_PROFILING = -O2
+CABAL_SANDBOX_DIR = ../../.cabal-sandbox
 
 ################################################################################
-test:
-	cabal-dev install --enable-tests
+include util/haskell.mk

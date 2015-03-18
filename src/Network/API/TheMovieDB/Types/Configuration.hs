@@ -10,14 +10,17 @@ modified, propagated, or distributed except according to the terms
 contained in the LICENSE file.
 
 -}
+
+--------------------------------------------------------------------------------
 module Network.API.TheMovieDB.Types.Configuration
        ( Configuration(..)
        ) where
 
+--------------------------------------------------------------------------------
 import Control.Applicative
 import Data.Aeson
-import Data.Aeson.Types (typeMismatch)
 
+--------------------------------------------------------------------------------
 -- | TheMovieDB API tries to preserve bandwidth by omitting
 -- information (such as full URLs for poster images) from most of the
 -- API calls.  Therefore in order to construct a complete URL for a
@@ -32,6 +35,7 @@ data Configuration = Configuration
   , cfgPosterSizes     :: [String] -- ^ List of possible image sizes.
   }
 
+--------------------------------------------------------------------------------
 instance FromJSON Configuration where
   parseJSON (Object v) =
     Configuration <$> images  "base_url"

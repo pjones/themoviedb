@@ -10,21 +10,28 @@ modified, propagated, or distributed except according to the terms
 contained in the LICENSE file.
 
 -}
-module Network.API.TheMovieDB.Types.Movie
-       (MovieID, Movie(..), moviePosterURLs) where
 
+--------------------------------------------------------------------------------
+module Network.API.TheMovieDB.Types.Movie
+       ( MovieID
+       , Movie(..)
+       , moviePosterURLs
+       ) where
+
+--------------------------------------------------------------------------------
 import Control.Applicative
 import Control.Monad (liftM)
 import Data.Aeson
-import Data.Aeson.Types (typeMismatch)
 import Data.Time (Day(..))
 import Network.API.TheMovieDB.Types.Configuration (Configuration(..))
 import Network.API.TheMovieDB.Types.Genre (Genre(..))
 import Network.API.TheMovieDB.Types.ReleaseDate (ReleaseDate(..))
 
+--------------------------------------------------------------------------------
 -- | Type for representing unique movie IDs.
 type MovieID = Int
 
+--------------------------------------------------------------------------------
 -- | Metadata for a movie.
 --
 --   * The 'moviePosterPath' is an incomplete URL.  To construct a
@@ -44,6 +51,7 @@ data Movie = Movie
   , movieRunTime     :: Int     -- ^ Movie length in minutes.
   } deriving (Eq, Show)
 
+--------------------------------------------------------------------------------
 instance FromJSON Movie where
   parseJSON (Object v) =
     Movie <$> v .:  "id"
@@ -58,6 +66,7 @@ instance FromJSON Movie where
           <*> v .:? "runtime"     .!= 0
   parseJSON _ = empty
 
+--------------------------------------------------------------------------------
 -- | Return a list of URLs for all possible movie posters.
 moviePosterURLs :: Configuration -> Movie -> [String]
 moviePosterURLs c m = [base ++ size ++ poster | size <- cfgPosterSizes c]

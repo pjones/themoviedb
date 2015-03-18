@@ -8,11 +8,15 @@ modified, propagated, or distributed except according to the terms
 contained in the LICENSE file.
 
 -}
+
+--------------------------------------------------------------------------------
 module Main where
+
+--------------------------------------------------------------------------------
 import Control.Monad (when)
 import Data.List (intercalate)
 import Data.Maybe (isNothing, fromJust)
-import Data.Time (toGregorian, formatTime)
+import Data.Time (formatTime)
 import Network.API.TheMovieDB
 import Network.API.TheMovieDB.Util (loadContext)
 import System.Environment (getArgs)
@@ -20,12 +24,14 @@ import System.Exit (exitFailure)
 import System.Locale (defaultTimeLocale)
 import Text.Printf (printf)
 
+--------------------------------------------------------------------------------
 -- Simple banner style printing of a 'Movie'
 printMovieHeader :: Movie -> IO ()
 printMovieHeader m =
   printf "%8d: %s (%s)\n" (movieID m) (movieTitle m) year
   where year = formatTime defaultTimeLocale "%Y" $ movieReleaseDate m
 
+--------------------------------------------------------------------------------
 -- Print more detailed information for a 'Movie'.
 printMovieDetails :: Movie -> IO ()
 printMovieDetails m =
@@ -35,6 +41,7 @@ printMovieDetails m =
      putStrLn $ movieOverview m
   where strJoin = intercalate ", "
 
+--------------------------------------------------------------------------------
 -- Well, of course, it's main!
 main :: IO ()
 main = do args <- getArgs
