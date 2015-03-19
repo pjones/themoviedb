@@ -1,5 +1,7 @@
 #+title: TheMovieDB To-do List
 
-* Features
-** TODO Switch to HTTPS/SSL/TLS
+* Milestone: Release 0.2.0.0
+** TODO Switch to HTTPS/SSL/TLS (via http-conduit)
    - This requires using something other than Network.HTTP.
+** TODO Remove key utility functions
+** TODO Ensure parsing errors are handled properly
