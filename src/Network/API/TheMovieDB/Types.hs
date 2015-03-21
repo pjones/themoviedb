@@ -8,24 +8,24 @@ modified, propagated, or distributed except according to the terms
 contained in the LICENSE file.
 
 -}
+
+--------------------------------------------------------------------------------
 module Network.API.TheMovieDB.Types
-       ( Key
-       , SearchQuery
-       , Context(..)
-       , Error(..)
-       , ReleaseDate(..)
-       , Configuration(..)
+       ( TheMovieDB
+       , Key
+       , Error (..)
        , GenreID
-       , Genre(..)
+       , Genre (..)
        , MovieID
-       , Movie(..)
+       , Movie (..)
+       , Configuration (..)
        , moviePosterURLs
-       , mkContext
+       , runTheMovieDB
+       , runTheMovieDBWithManager
        ) where
 
-import Network.API.TheMovieDB.Types.API
+import Network.API.TheMovieDB.Internal.TheMovieDB
+import Network.API.TheMovieDB.Internal.Types
 import Network.API.TheMovieDB.Types.Configuration
-import Network.API.TheMovieDB.Types.Context
 import Network.API.TheMovieDB.Types.Genre
 import Network.API.TheMovieDB.Types.Movie
-import Network.API.TheMovieDB.Types.ReleaseDate

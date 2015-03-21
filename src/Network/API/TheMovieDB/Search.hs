@@ -10,34 +10,46 @@ modified, propagated, or distributed except according to the terms
 contained in the LICENSE file.
 
 -}
-module Network.API.TheMovieDB.Search (searchErr, search) where
+
+--------------------------------------------------------------------------------
+module Network.API.TheMovieDB.Search
+       ( searchErr
+       , search
+       ) where
+
+--------------------------------------------------------------------------------
 import Control.Applicative
-import Control.Monad (liftM)
 import Data.Aeson
-import Network.API.TheMovieDB.Generic
+import Data.Text (Text)
+import Network.API.TheMovieDB.Internal.Generic
 import Network.API.TheMovieDB.Types
 
+--------------------------------------------------------------------------------
 -- Internal wrapper to parse a list of movies from JSON.
-newtype SearchResults = SearchResults
-  {searchResults :: [Movie]} deriving (Eq, Show)
+newtype SearchResults = SearchResults {searchResults :: [Movie]}
+                        deriving (Eq, Show)
 
+--------------------------------------------------------------------------------
 instance FromJSON SearchResults where
   parseJSON (Object v) = SearchResults <$> v .: "results"
   parseJSON _          = empty
 
--- Internal function to translate search results to a list of movies.
-fetchSearchResults :: Context -> SearchQuery -> IO (Either Error SearchResults)
-fetchSearchResults ctx query = getAndParse ctx "search/movie" [("query", query)]
+--------------------------------------------------------------------------------
+-- | Internal function to translate search results to a list of movies.
+fetchSearchResults :: Text -> TheMovieDB (Either Error SearchResults)
+fetchSearchResults query = getAndParse "search/movie" [("query", Just query)]
 
+--------------------------------------------------------------------------------
 -- | Search TheMovieDB using the given query string and return either
 -- an 'Error' if something went wrong or a list of matching 'Movie's.
 --
 -- The movies returned will not have all their fields completely
 -- filled out, to get a complete record you'll need to follow this
 -- call up with a call to 'fetchErr' or 'fetch'.
-searchErr :: Context -> SearchQuery -> IO (Either Error [Movie])
-searchErr ctx query = liftM (fmap searchResults) $ fetchSearchResults ctx query
+searchErr :: Text -> TheMovieDB (Either Error [Movie])
+searchErr query = (fmap searchResults) <$> fetchSearchResults query
 
+--------------------------------------------------------------------------------
 -- | Search TheMovieDB using the given query string and return a list
 -- of movies.  This function fails if there are any errors.  For a
 -- function that returns an error instead of failing see 'searchErr'.
@@ -45,5 +57,5 @@ searchErr ctx query = liftM (fmap searchResults) $ fetchSearchResults ctx query
 -- The movies returned will not have all their fields completely
 -- filled out, to get a complete record you'll need to follow this
 -- call up with a call to 'fetchErr' or 'fetch'.
-search :: Context -> SearchQuery -> IO [Movie]
-search ctx query = getOrFail $ searchErr ctx query
+search :: Text -> TheMovieDB [Movie]
+search query = getOrFail (searchErr query)

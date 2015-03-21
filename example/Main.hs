@@ -13,12 +13,11 @@ contained in the LICENSE file.
 module Main where
 
 --------------------------------------------------------------------------------
-import Control.Monad (when)
+import Control.Monad.IO.Class (liftIO)
 import Data.List (intercalate)
-import Data.Maybe (isNothing, fromJust)
+import qualified Data.Text as T
 import Data.Time (formatTime)
 import Network.API.TheMovieDB
-import Network.API.TheMovieDB.Util (loadContext)
 import System.Environment (getArgs)
 import System.Exit (exitFailure)
 import System.Locale (defaultTimeLocale)
@@ -29,7 +28,9 @@ import Text.Printf (printf)
 printMovieHeader :: Movie -> IO ()
 printMovieHeader m =
   printf "%8d: %s (%s)\n" (movieID m) (movieTitle m) year
-  where year = formatTime defaultTimeLocale "%Y" $ movieReleaseDate m
+  where year = case movieReleaseDate m of
+                 Just d  -> formatTime defaultTimeLocale "%Y" d
+                 Nothing -> "----"
 
 --------------------------------------------------------------------------------
 -- Print more detailed information for a 'Movie'.
@@ -42,32 +43,31 @@ printMovieDetails m =
   where strJoin = intercalate ", "
 
 --------------------------------------------------------------------------------
--- Well, of course, it's main!
 main :: IO ()
-main = do args <- getArgs
-          contextM <- loadContext
-          when (isNothing contextM) $ error "failed to load API key"
-          let context = fromJust contextM
-          cfg <- config context
-          case args of
-            ["key"]           -> putStrLn $ apiKey context
+main = do
+  (key:args) <- getArgs
 
-            ["search", query] -> do movies <- search context query
-                                    mapM_ printMovieHeader movies
+  runTheMovieDB (T.pack key) $ do
+    cfg <- config
 
-            ["fetch", mID]    -> do movie <- fetch context (read mID)
-                                    printMovieHeader movie
-                                    mapM_ putStrLn $ moviePosterURLs cfg movie
-                                    printMovieDetails movie
+    case args of
+      ["search", query] -> do movies <- search (T.pack query)
+                              liftIO $ mapM_ printMovieHeader movies
 
-            _                 -> do putStrLn usage
-                                    exitFailure
+      ["fetch", mID]    -> do movie <- fetch (read mID)
+                              liftIO $ do
+                                printMovieHeader movie
+                                mapM_ putStrLn $ moviePosterURLs cfg movie
+                                printMovieDetails movie
 
-  where usage = "Usage: tmdb {search QUERY|fetch ID|key}\n\n" ++
+      _                 -> liftIO $ do
+                             putStrLn usage
+                             exitFailure
+
+  where usage = "Usage: tmdb key {search QUERY|fetch ID}\n\n" ++
                 "Description:\n" ++
                 "       search: search TheMovieDB\n" ++
                 "       fetch:  fetch info about one movie\n" ++
-                "       key:    output your API key\n\n" ++
-                "Examples:\n" ++
-                "       tmdb search \"back to the future\"\n" ++
-                "       tmdb fetch 105"
+                 "Examples:\n" ++
+                "       tmdb KEY search \"back to the future\"\n" ++
+                "       tmdb KEY fetch 105"

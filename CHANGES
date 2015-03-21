@@ -2,8 +2,15 @@
 #+title: Version History
 #+startup: showall
 
+* 1.0.0.0 (Unreleased)
+
+  - Major rewrite of the interface
+  - Removed utility functions for loading API keys
+  - Fixed bug: https://github.com/pjones/themoviedb/issues/1
+  - Fixed bug: https://github.com/pjones/themoviedb/issues/2
+
 * 0.1.0.1 (December 17, 2012)
-  
+
   - Small internal changes to compile with GHC 7.6.1.
   - Also compiles with GHC 7.4.2 and HP 2012.4.0.0.
 

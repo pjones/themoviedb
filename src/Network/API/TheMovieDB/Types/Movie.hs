@@ -20,12 +20,11 @@ module Network.API.TheMovieDB.Types.Movie
 
 --------------------------------------------------------------------------------
 import Control.Applicative
-import Control.Monad (liftM)
 import Data.Aeson
-import Data.Time (Day(..))
-import Network.API.TheMovieDB.Types.Configuration (Configuration(..))
-import Network.API.TheMovieDB.Types.Genre (Genre(..))
-import Network.API.TheMovieDB.Types.ReleaseDate (ReleaseDate(..))
+import Data.Time (Day (..))
+import Network.API.TheMovieDB.Internal.ReleaseDate
+import Network.API.TheMovieDB.Types.Configuration
+import Network.API.TheMovieDB.Types.Genre
 
 --------------------------------------------------------------------------------
 -- | Type for representing unique movie IDs.
@@ -38,17 +37,36 @@ type MovieID = Int
 --     complete URL you'll need to use the 'Configuration' type.  You
 --     can also use 'moviePosterURLs'.
 data Movie = Movie
-  { movieID          :: MovieID -- ^ TheMovieDB unique ID.
-  , movieTitle       :: String  -- ^ The name/title of the movie.
-  , movieOverview    :: String  -- ^ Short plot summary.
-  , movieGenres      :: [Genre] -- ^ List of 'Genre's.
-  , moviePopularity  :: Double  -- ^ Popularity ranking.
-  , moviePosterPath  :: String  -- ^ Incomplete URL for poster image.
-                                -- See 'moviePosterURLs'.
-  , movieReleaseDate :: Day     -- ^ Movie release date.
-  , movieAdult       :: Bool    -- ^ TheMovieDB adult movie flag.
-  , movieIMDB        :: String  -- ^ IMDB.com ID.
-  , movieRunTime     :: Int     -- ^ Movie length in minutes.
+  { movieID :: MovieID
+    -- ^ TheMovieDB unique ID.
+
+  , movieTitle :: String
+    -- ^ The name/title of the movie.
+
+  , movieOverview :: String
+    -- ^ Short plot summary.
+
+  , movieGenres :: [Genre]
+    -- ^ List of 'Genre's.
+
+  , moviePopularity :: Double
+    -- ^ Popularity ranking.
+
+  , moviePosterPath :: String
+    -- ^ Incomplete URL for poster image.  See 'moviePosterURLs'.
+
+  , movieReleaseDate :: Maybe Day
+    -- ^ Movie release date.  (Movie may not have been released yet.)
+
+  , movieAdult :: Bool
+    -- ^ TheMovieDB adult movie flag.
+
+  , movieIMDB :: String
+    -- ^ IMDB.com ID.
+
+  , movieRunTime :: Int
+    -- ^ Movie length in minutes.
+
   } deriving (Eq, Show)
 
 --------------------------------------------------------------------------------
@@ -60,7 +78,7 @@ instance FromJSON Movie where
           <*> v .:? "genres"      .!= []
           <*> v .:? "popularity"  .!= 0.0
           <*> v .:? "poster_path" .!= ""
-          <*> liftM releaseDate (v .: "release_date")
+          <*> (releaseDate <$> v .: "release_date")
           <*> v .:? "adult"       .!= False
           <*> v .:? "imdb_id"     .!= ""
           <*> v .:? "runtime"     .!= 0

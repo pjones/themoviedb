@@ -10,23 +10,33 @@ contained in the LICENSE file.
 -}
 
 --------------------------------------------------------------------------------
-module Network.API.TheMovieDB.Config
-       ( configErr
-       , config
+module Network.API.TheMovieDB.Internal.Types
+       ( Key
+       , Body
+       , Path
+       , Error (..)
        ) where
 
 --------------------------------------------------------------------------------
-import Network.API.TheMovieDB.Internal.Generic
-import Network.API.TheMovieDB.Types
+import Data.Text (Text)
+import Data.ByteString.Lazy (ByteString)
 
 --------------------------------------------------------------------------------
--- | Fetch the API configuration information such as base URLs for
--- movie posters.  Results in either an 'Error' or a 'Configuration'.
-configErr :: TheMovieDB (Either Error Configuration)
-configErr = getAndParse "configuration" []
+-- | Type for the API key issued by TheMovieDB.
+type Key = Text
 
 --------------------------------------------------------------------------------
--- | Fetch the API configuration information or fail.  For a function
--- that returns an error instead of failing see 'configErr'.
-config :: TheMovieDB Configuration
-config = getOrFail configErr
+-- Internal types.
+type Path = String
+type Body = ByteString
+
+--------------------------------------------------------------------------------
+-- | Possible errors returned by the API.
+data Error = NetworkError String
+             -- ^ Network or HTTP error.
+             
+           | ParseError String (Maybe ByteString)
+             -- ^ Invalid or error response from the API.
+             
+           deriving (Eq, Show)
+

@@ -10,20 +10,30 @@ modified, propagated, or distributed except according to the terms
 contained in the LICENSE file.
 
 -}
-module Network.API.TheMovieDB.Types.Genre (GenreID, Genre(..)) where
+
+--------------------------------------------------------------------------------
+module Network.API.TheMovieDB.Types.Genre
+       ( GenreID
+       , Genre(..)
+       ) where
+
+--------------------------------------------------------------------------------
 import Control.Applicative
 import Data.Aeson
 import Data.Aeson.Types (typeMismatch)
 
+--------------------------------------------------------------------------------
 -- | Type for representing unique genre IDs.
 type GenreID = Int
 
+--------------------------------------------------------------------------------
 -- | Metadata for a genre.
 data Genre = Genre
   { genreID   :: GenreID -- ^ TheMovieDB unique ID.
   , genreName :: String  -- ^ The name of the genre.
   } deriving (Eq, Show)
 
+--------------------------------------------------------------------------------
 instance FromJSON Genre where
   parseJSON (Object v) = Genre <$> v .: "id" <*> v .: "name"
   parseJSON v          = typeMismatch "Genre" v

@@ -40,15 +40,13 @@ module Network.API.TheMovieDB (
   Movie(..),
   Genre(..),
 
-  -- ** Context and Errors
-  Context(),
+  -- ** Errors
   Error(..),
 
   -- ** Type Synonyms
   Key,
   MovieID,
   GenreID,
-  SearchQuery,
 
   -- * API Functions
   -- ** Functions That Fail
@@ -62,9 +60,9 @@ module Network.API.TheMovieDB (
   searchErr,
 
   -- ** Utility functions
-  mkContext,
-  apiKey,
-  moviePosterURLs
+  moviePosterURLs,
+  runTheMovieDB,
+  runTheMovieDBWithManager
   ) where
 
 import Network.API.TheMovieDB.Types
