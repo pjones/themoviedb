@@ -20,9 +20,3 @@ There's an [example][] application in the `example` directory.
 Surprising, I know.
 
 [example]: https://github.com/pjones/themoviedb/blob/master/example/Main.hs
-
-# Warning
-
-This library currently uses HTTP and not *HTTPS* while sending your
-API key to TheMovieDB.  In order to fix this we'll need to use
-something other than `Network.HTTP`.  Patches welcome!
