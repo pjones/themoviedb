@@ -15,11 +15,13 @@ module Main where
 --------------------------------------------------------------------------------
 import Control.Monad.IO.Class (liftIO)
 import Data.List (intercalate)
+import Data.Maybe (listToMaybe)
+import Data.Text (Text)
 import qualified Data.Text as T
 import Data.Time (formatTime)
 import Network.API.TheMovieDB
 import System.Environment (getArgs)
-import System.Exit (exitFailure)
+import System.Exit (exitFailure, exitSuccess)
 import System.Locale (defaultTimeLocale)
 import Text.Printf (printf)
 
@@ -43,26 +45,37 @@ printMovieDetails m =
   where strJoin = intercalate ", "
 
 --------------------------------------------------------------------------------
+searchAndListMovies :: Text -> TheMovieDB ()
+searchAndListMovies query = do
+  movies <- search query
+  liftIO $ mapM_ printMovieHeader movies
+
+--------------------------------------------------------------------------------
+fetchAndPrintMovie :: MovieID -> TheMovieDB ()
+fetchAndPrintMovie mid = do
+  cfg <- config
+  movie <- fetch mid
+
+  liftIO $ do
+    printMovieHeader movie
+    mapM_ putStrLn (moviePosterURLs cfg movie)
+    printMovieDetails movie
+
+--------------------------------------------------------------------------------
 main :: IO ()
 main = do
-  (key:args) <- getArgs
+  args <- getArgs
+  let key = maybe T.empty T.pack (listToMaybe args)
 
-  runTheMovieDB (T.pack key) $ do
-    cfg <- config
-
+  result <- runTheMovieDB key $ do
     case args of
-      ["search", query] -> do movies <- search (T.pack query)
-                              liftIO $ mapM_ printMovieHeader movies
+      [_, "search", query] -> searchAndListMovies (T.pack query)
+      [_, "fetch", mid]    -> fetchAndPrintMovie (read mid)
+      _                    -> liftIO (putStrLn usage >> exitFailure)
 
-      ["fetch", mID]    -> do movie <- fetch (read mID)
-                              liftIO $ do
-                                printMovieHeader movie
-                                mapM_ putStrLn $ moviePosterURLs cfg movie
-                                printMovieDetails movie
-
-      _                 -> liftIO $ do
-                             putStrLn usage
-                             exitFailure
+  case result of
+    Left err -> putStrLn (show err) >> exitFailure
+    Right _  -> exitSuccess
 
   where usage = "Usage: tmdb key {search QUERY|fetch ID}\n\n" ++
                 "Description:\n" ++

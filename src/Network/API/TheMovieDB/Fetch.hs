@@ -11,8 +11,7 @@ contained in the LICENSE file.
 
 --------------------------------------------------------------------------------
 module Network.API.TheMovieDB.Fetch
-       ( fetchErr
-       , fetch
+       ( fetch
        ) where
 
 --------------------------------------------------------------------------------
@@ -20,14 +19,6 @@ import Network.API.TheMovieDB.Internal.Generic
 import Network.API.TheMovieDB.Types
 
 --------------------------------------------------------------------------------
--- | Fetch the metadata for the movie with the given ID.  Returns
--- either an 'Error' or a 'Movie'.
-fetchErr :: MovieID -> TheMovieDB (Either Error Movie)
-fetchErr mid = getAndParse ("movie/" ++ show mid) []
-
---------------------------------------------------------------------------------
--- | Fetch the metadata for the movie with the given ID and fail if
--- any errors are encountered along the way.  For a function that
--- returns an error instead of failing see 'fetchErr'.
+-- | Fetch the metadata for the movie with the given ID.
 fetch :: MovieID -> TheMovieDB Movie
-fetch mid = getOrFail (fetchErr mid)
+fetch mid = getAndParse ("movie/" ++ show mid) []

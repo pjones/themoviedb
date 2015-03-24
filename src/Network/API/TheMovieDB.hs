@@ -33,36 +33,31 @@ A typical workflow while using this library is:
 This library also includes an example executable in the @example@
 directory.
 -}
-module Network.API.TheMovieDB (
-  -- * Types
-  -- ** TheMovieDB Metadata
-  Configuration(),
-  Movie(..),
-  Genre(..),
+module Network.API.TheMovieDB
+  ( -- * Types
+    -- ** TheMovieDB Metadata
+    TheMovieDB
+  , Configuration
+  , Movie(..)
+  , Genre(..)
 
-  -- ** Errors
-  Error(..),
+    -- ** Errors
+  , Error(..)
 
-  -- ** Type Synonyms
-  Key,
-  MovieID,
-  GenreID,
+    -- ** Type Synonyms
+  , Key
+  , MovieID
+  , GenreID
 
-  -- * API Functions
-  -- ** Functions That Fail
-  config,
-  fetch,
-  search,
+    -- * API Functions
+  , config
+  , fetch
+  , search
 
-  -- ** Functions That Return Errors
-  configErr,
-  fetchErr,
-  searchErr,
-
-  -- ** Utility functions
-  moviePosterURLs,
-  runTheMovieDB,
-  runTheMovieDBWithManager
+    -- * Utility functions
+  , moviePosterURLs
+  , runTheMovieDB
+  , runTheMovieDBWithManager
   ) where
 
 import Network.API.TheMovieDB.Types

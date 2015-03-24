@@ -16,15 +16,16 @@ module Network.API.TheMovieDB.Internal.TheMovieDB
        ( TheMovieDB
        , RequestFunction
        , runRequest
+       , apiError
        , runTheMovieDB
        , runTheMovieDBWithManager
        , runTheMovieDBWithRequestFunction
        ) where
 
 --------------------------------------------------------------------------------
--- import Control.Monad.IO.Class (liftIO)
 import Control.Applicative
 import Control.Monad.Reader
+import Control.Monad.Trans.Either
 import Network.API.TheMovieDB.Internal.HTTP
 import Network.API.TheMovieDB.Internal.Types
 import Network.HTTP.Client (Manager, withManager)
@@ -32,37 +33,51 @@ import Network.HTTP.Client.TLS (tlsManagerSettings)
 import Network.HTTP.Types
 
 --------------------------------------------------------------------------------
-type RequestFunction = Path -> QueryText -> TheMovieDB (Either Error Body)
+-- | The type for functions that make requests to the API (or pretend
+-- to make a request for testing purposes).
+type RequestFunction = (Path -> QueryText -> IO (Either Error Body))
 
 --------------------------------------------------------------------------------
-newtype TheMovieDB a = TheMovieDB {unTMDB :: ReaderT RequestFunction IO a}
-                       deriving (Functor, Applicative, Monad, MonadIO)
+-- | Result type for operations involving TheMovieDB API.
+newtype TheMovieDB a =
+  TheMovieDB {unTMDB :: ReaderT RequestFunction (EitherT Error IO) a}
+  deriving (Functor, Applicative, Monad, MonadIO, MonadReader RequestFunction)
 
 --------------------------------------------------------------------------------
-runRequest :: Path -> QueryText -> TheMovieDB (Either Error Body)
-runRequest path params = TheMovieDB $ ask >>= \f -> unTMDB (f path params)
+-- | Helper function for making a request using the request function
+-- stashed away in the reader monad.
+runRequest :: Path -> QueryText -> TheMovieDB Body
+runRequest path params = do
+  func   <- ask
+  result <- liftIO (func path params)
+  TheMovieDB $ lift $ hoistEither result
 
 --------------------------------------------------------------------------------
-internalReqFunc :: Manager -> Key -> RequestFunction                                                    
-internalReqFunc m k p q = liftIO $ apiGET m k p q
+apiError :: Error -> TheMovieDB a  
+apiError = TheMovieDB . lift . left
 
 --------------------------------------------------------------------------------
-runTheMovieDB :: Key
-              -> TheMovieDB a
-              -> IO a
+runTheMovieDB
+  :: Key
+  -> TheMovieDB a
+  -> IO (Either Error a)
 runTheMovieDB k t =
   withManager tlsManagerSettings (\m -> runTheMovieDBWithManager m k t)
 
 --------------------------------------------------------------------------------
-runTheMovieDBWithManager :: Manager
-                         -> Key
-                         -> TheMovieDB a
-                         -> IO a
+runTheMovieDBWithManager
+  :: Manager
+  -> Key
+  -> TheMovieDB a
+  -> IO (Either Error a)
 runTheMovieDBWithManager m k t =
-  runTheMovieDBWithRequestFunction (internalReqFunc m k) t
+  runTheMovieDBWithRequestFunction (apiGET m k) t
 
 --------------------------------------------------------------------------------
-runTheMovieDBWithRequestFunction :: RequestFunction
-                                 -> TheMovieDB a
-                                 -> IO a
-runTheMovieDBWithRequestFunction f t = runReaderT (unTMDB t) f
+-- | Low-level interface for executing a 'TheMovieDB' using the given
+-- request function.
+runTheMovieDBWithRequestFunction
+  :: RequestFunction            -- ^ The request function to use.
+  -> TheMovieDB a               -- ^ The API calls to make.
+  -> IO (Either Error a)        -- ^ Response.
+runTheMovieDBWithRequestFunction f t = runEitherT $ runReaderT (unTMDB t) f

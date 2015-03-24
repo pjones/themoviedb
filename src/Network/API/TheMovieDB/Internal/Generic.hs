@@ -12,7 +12,6 @@ contained in the LICENSE file.
 --------------------------------------------------------------------------------
 module Network.API.TheMovieDB.Internal.Generic
        ( getAndParse
-       , getOrFail
        ) where
 
 --------------------------------------------------------------------------------
@@ -23,15 +22,10 @@ import Network.HTTP.Types
 
 --------------------------------------------------------------------------------
 -- Helper function to fetch and decode JSON.
-getAndParse :: FromJSON a => Path -> QueryText -> TheMovieDB (Either Error a)
-getAndParse path params =
-  do httpResult <- runRequest path params
-     return (either (Left . id) doParse $ httpResult)
-  where
-    doParse b = either (Left . parseErr b) Right $ eitherDecode b
-    parseErr b e = ParseError ("failed to parse JSON response: " ++ e) (Just b)
+getAndParse :: FromJSON a => Path -> QueryText -> TheMovieDB a
+getAndParse path params = do
+  body <- runRequest path params
 
---------------------------------------------------------------------------------
--- Helper function to fail or return the right part of an either.
-getOrFail :: FromJSON a => TheMovieDB (Either Error a) -> TheMovieDB a
-getOrFail toCheck = toCheck >>= either (fail . show) return
+  case eitherDecode body of
+    Left  e -> apiError $ ParseError ("bad JSON: " ++ e) (Just body)
+    Right a -> return a

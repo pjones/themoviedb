@@ -11,8 +11,7 @@ contained in the LICENSE file.
 
 --------------------------------------------------------------------------------
 module Network.API.TheMovieDB.Config
-       ( configErr
-       , config
+       ( config
        ) where
 
 --------------------------------------------------------------------------------
@@ -21,12 +20,6 @@ import Network.API.TheMovieDB.Types
 
 --------------------------------------------------------------------------------
 -- | Fetch the API configuration information such as base URLs for
--- movie posters.  Results in either an 'Error' or a 'Configuration'.
-configErr :: TheMovieDB (Either Error Configuration)
-configErr = getAndParse "configuration" []
-
---------------------------------------------------------------------------------
--- | Fetch the API configuration information or fail.  For a function
--- that returns an error instead of failing see 'configErr'.
+-- movie posters.
 config :: TheMovieDB Configuration
-config = getOrFail configErr
+config = getAndParse "configuration" []

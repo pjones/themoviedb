@@ -35,7 +35,7 @@ fakeNetworkError _ _ = return $ Left $ NetworkError "fake outage"
 
 --------------------------------------------------------------------------------
 goodMovieFieldsTest = TestCase $ do
-  result <- runTheMovieDBWithRequestFunction loadGoodMovieFile (fetchErr 0)
+  result <- runTheMovieDBWithRequestFunction loadGoodMovieFile (fetch 0)
   case result of
     Left    err -> assertFailure $ show err
     Right movie -> do
@@ -55,14 +55,14 @@ goodMovieFieldsTest = TestCase $ do
 
 --------------------------------------------------------------------------------
 badMovieJSONTest = TestCase $ do
-  result <- runTheMovieDBWithRequestFunction loadBadMovieFile (fetchErr 0)
+  result <- runTheMovieDBWithRequestFunction loadBadMovieFile (fetch 0)
   case result of
     Left (ParseError e _) -> return ()
     _                     -> assertFailure "JSON should have been bad"
 
 --------------------------------------------------------------------------------
 shouldHaveNetworkErrorTest = TestCase $ do
-  result <- runTheMovieDBWithRequestFunction fakeNetworkError (fetchErr 0)
+  result <- runTheMovieDBWithRequestFunction fakeNetworkError (fetch 0)
   case result of
     Left (NetworkError e) -> return ()
     _                     -> assertFailure "should have network error"

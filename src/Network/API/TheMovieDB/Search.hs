@@ -13,8 +13,7 @@ contained in the LICENSE file.
 
 --------------------------------------------------------------------------------
 module Network.API.TheMovieDB.Search
-       ( searchErr
-       , search
+       ( search
        ) where
 
 --------------------------------------------------------------------------------
@@ -36,7 +35,7 @@ instance FromJSON SearchResults where
 
 --------------------------------------------------------------------------------
 -- | Internal function to translate search results to a list of movies.
-fetchSearchResults :: Text -> TheMovieDB (Either Error SearchResults)
+fetchSearchResults :: Text -> TheMovieDB SearchResults
 fetchSearchResults query = getAndParse "search/movie" [("query", Just query)]
 
 --------------------------------------------------------------------------------
@@ -46,16 +45,5 @@ fetchSearchResults query = getAndParse "search/movie" [("query", Just query)]
 -- The movies returned will not have all their fields completely
 -- filled out, to get a complete record you'll need to follow this
 -- call up with a call to 'fetchErr' or 'fetch'.
-searchErr :: Text -> TheMovieDB (Either Error [Movie])
-searchErr query = (fmap searchResults) <$> fetchSearchResults query
-
---------------------------------------------------------------------------------
--- | Search TheMovieDB using the given query string and return a list
--- of movies.  This function fails if there are any errors.  For a
--- function that returns an error instead of failing see 'searchErr'.
---
--- The movies returned will not have all their fields completely
--- filled out, to get a complete record you'll need to follow this
--- call up with a call to 'fetchErr' or 'fetch'.
 search :: Text -> TheMovieDB [Movie]
-search query = getOrFail (searchErr query)
+search query = searchResults <$> fetchSearchResults query
