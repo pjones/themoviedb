@@ -42,16 +42,16 @@ type RequestFunction = (Path -> QueryText -> IO (Either Error Body))
 -- | Result type for operations involving TheMovieDB API.
 newtype TheMovieDB a =
   TheMovieDB {unTMDB :: ReaderT RequestFunction (EitherT Error IO) a}
-  deriving (Functor, Applicative, Monad, MonadIO, MonadReader RequestFunction)
+  deriving (Functor, Applicative, Monad, MonadIO)
 
 --------------------------------------------------------------------------------
 -- | Helper function for making a request using the request function
 -- stashed away in the reader monad.
 runRequest :: Path -> QueryText -> TheMovieDB Body
-runRequest path params = do
+runRequest path params = TheMovieDB $ do
   func   <- ask
   result <- liftIO (func path params)
-  TheMovieDB $ lift $ hoistEither result
+  lift (hoistEither result)
 
 --------------------------------------------------------------------------------
 -- | Helper function to preform an HTTP GET and decode the JSON result.

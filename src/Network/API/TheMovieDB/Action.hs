@@ -12,8 +12,9 @@ contained in the LICENSE file.
 -}
 
 --------------------------------------------------------------------------------
-module Network.API.TheMovieDB.Search
-       ( search
+module Network.API.TheMovieDB.Action
+       ( fetch
+       , search
        ) where
 
 --------------------------------------------------------------------------------
@@ -22,6 +23,11 @@ import Data.Text (Text)
 import Network.API.TheMovieDB.Internal.SearchResults
 import Network.API.TheMovieDB.Internal.TheMovieDB
 import Network.API.TheMovieDB.Types
+
+--------------------------------------------------------------------------------
+-- | Fetch the metadata for the movie with the given ID.
+fetch :: MovieID -> TheMovieDB Movie
+fetch mid = getAndParse ("movie/" ++ show mid) []
 
 --------------------------------------------------------------------------------
 -- | Internal function to translate search results to a list of movies.

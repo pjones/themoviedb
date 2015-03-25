@@ -40,16 +40,15 @@ flag maintainer
 library
   exposed-modules:
     Network.API.TheMovieDB
+    Network.API.TheMovieDB.Action
     Network.API.TheMovieDB.Config
-    Network.API.TheMovieDB.Fetch
+    Network.API.TheMovieDB.Internal.Configuration
     Network.API.TheMovieDB.Internal.HTTP
     Network.API.TheMovieDB.Internal.ReleaseDate
     Network.API.TheMovieDB.Internal.SearchResults
     Network.API.TheMovieDB.Internal.TheMovieDB
     Network.API.TheMovieDB.Internal.Types
-    Network.API.TheMovieDB.Search
     Network.API.TheMovieDB.Types
-    Network.API.TheMovieDB.Types.Configuration
     Network.API.TheMovieDB.Types.Genre
     Network.API.TheMovieDB.Types.Movie
 

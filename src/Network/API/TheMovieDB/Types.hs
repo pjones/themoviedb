@@ -26,6 +26,6 @@ module Network.API.TheMovieDB.Types
 
 import Network.API.TheMovieDB.Internal.TheMovieDB
 import Network.API.TheMovieDB.Internal.Types
-import Network.API.TheMovieDB.Types.Configuration
+import Network.API.TheMovieDB.Internal.Configuration
 import Network.API.TheMovieDB.Types.Genre
 import Network.API.TheMovieDB.Types.Movie

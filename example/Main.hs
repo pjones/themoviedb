@@ -10,7 +10,7 @@ contained in the LICENSE file.
 -}
 
 --------------------------------------------------------------------------------
-module Main where
+module Main (main) where
 
 --------------------------------------------------------------------------------
 import Control.Monad.IO.Class (liftIO)
@@ -26,7 +26,7 @@ import System.Locale (defaultTimeLocale)
 import Text.Printf (printf)
 
 --------------------------------------------------------------------------------
--- Simple banner style printing of a 'Movie'
+-- | Simple banner style printing of a 'Movie'.
 printMovieHeader :: Movie -> IO ()
 printMovieHeader m =
   printf "%8d: %s (%s)\n" (movieID m) (movieTitle m) year
@@ -35,7 +35,7 @@ printMovieHeader m =
                  Nothing -> "----"
 
 --------------------------------------------------------------------------------
--- Print more detailed information for a 'Movie'.
+-- | Print more detailed information for a 'Movie'.
 printMovieDetails :: Movie -> IO ()
 printMovieDetails m =
   do putStrLn $ "Popularity: " ++ show (moviePopularity m)
@@ -45,12 +45,14 @@ printMovieDetails m =
   where strJoin = intercalate ", "
 
 --------------------------------------------------------------------------------
+-- | Search for movies with a query string.
 searchAndListMovies :: Text -> TheMovieDB ()
 searchAndListMovies query = do
   movies <- search query
   liftIO $ mapM_ printMovieHeader movies
 
 --------------------------------------------------------------------------------
+-- | Find a specific movie given its ID.
 fetchAndPrintMovie :: MovieID -> TheMovieDB ()
 fetchAndPrintMovie mid = do
   cfg <- config
@@ -62,12 +64,13 @@ fetchAndPrintMovie mid = do
     printMovieDetails movie
 
 --------------------------------------------------------------------------------
+-- | Low budget command line parsing and dispatch.
 main :: IO ()
 main = do
   args <- getArgs
   let key = maybe T.empty T.pack (listToMaybe args)
 
-  result <- runTheMovieDB key $ do
+  result <- runTheMovieDB key $
     case args of
       [_, "search", query] -> searchAndListMovies (T.pack query)
       [_, "fetch", mid]    -> fetchAndPrintMovie (read mid)

@@ -12,8 +12,9 @@ contained in the LICENSE file.
 -}
 
 --------------------------------------------------------------------------------
-module Network.API.TheMovieDB.Types.Configuration
-       ( Configuration(..)
+-- | Internal configuration information for TheMovieDB API.
+module Network.API.TheMovieDB.Internal.Configuration
+       ( Configuration (..)
        ) where
 
 --------------------------------------------------------------------------------
@@ -24,8 +25,8 @@ import Data.Aeson
 -- | TheMovieDB API tries to preserve bandwidth by omitting
 -- information (such as full URLs for poster images) from most of the
 -- API calls.  Therefore in order to construct a complete URL for a
--- movie poster you'll need to use the 'config' or 'configErr'
--- function to retrieve API configuration information.
+-- movie poster you'll need to use the 'config' function to retrieve
+-- API configuration information.
 --
 -- A helper function is provided ('moviePosterURLs') that constructs a
 -- list of all poster URLs given a 'Movie' and 'Configuration'.

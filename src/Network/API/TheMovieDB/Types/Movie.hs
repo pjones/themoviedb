@@ -22,8 +22,8 @@ module Network.API.TheMovieDB.Types.Movie
 import Control.Applicative
 import Data.Aeson
 import Data.Time (Day (..))
+import Network.API.TheMovieDB.Internal.Configuration
 import Network.API.TheMovieDB.Internal.ReleaseDate
-import Network.API.TheMovieDB.Types.Configuration
 import Network.API.TheMovieDB.Types.Genre
 
 --------------------------------------------------------------------------------
