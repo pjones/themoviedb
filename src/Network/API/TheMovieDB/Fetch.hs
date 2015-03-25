@@ -15,7 +15,7 @@ module Network.API.TheMovieDB.Fetch
        ) where
 
 --------------------------------------------------------------------------------
-import Network.API.TheMovieDB.Internal.Generic
+import Network.API.TheMovieDB.Internal.TheMovieDB
 import Network.API.TheMovieDB.Types
 
 --------------------------------------------------------------------------------

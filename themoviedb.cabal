@@ -42,9 +42,9 @@ library
     Network.API.TheMovieDB
     Network.API.TheMovieDB.Config
     Network.API.TheMovieDB.Fetch
-    Network.API.TheMovieDB.Internal.Generic
     Network.API.TheMovieDB.Internal.HTTP
     Network.API.TheMovieDB.Internal.ReleaseDate
+    Network.API.TheMovieDB.Internal.SearchResults
     Network.API.TheMovieDB.Internal.TheMovieDB
     Network.API.TheMovieDB.Internal.Types
     Network.API.TheMovieDB.Search

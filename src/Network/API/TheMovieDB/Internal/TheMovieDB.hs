@@ -15,8 +15,8 @@ contained in the LICENSE file.
 module Network.API.TheMovieDB.Internal.TheMovieDB
        ( TheMovieDB
        , RequestFunction
-       , runRequest
-       , apiError
+       , getAndParse
+       , tmdbError
        , runTheMovieDB
        , runTheMovieDBWithManager
        , runTheMovieDBWithRequestFunction
@@ -26,6 +26,7 @@ module Network.API.TheMovieDB.Internal.TheMovieDB
 import Control.Applicative
 import Control.Monad.Reader
 import Control.Monad.Trans.Either
+import Data.Aeson
 import Network.API.TheMovieDB.Internal.HTTP
 import Network.API.TheMovieDB.Internal.Types
 import Network.HTTP.Client (Manager, withManager)
@@ -53,23 +54,45 @@ runRequest path params = do
   TheMovieDB $ lift $ hoistEither result
 
 --------------------------------------------------------------------------------
-apiError :: Error -> TheMovieDB a  
-apiError = TheMovieDB . lift . left
+-- | Helper function to preform an HTTP GET and decode the JSON result.
+getAndParse :: FromJSON a => Path -> QueryText -> TheMovieDB a
+getAndParse path params = do
+  body <- runRequest path params
+
+  case eitherDecode body of
+    Left  e -> tmdbError $ ParseError ("bad JSON: " ++ e) (Just body)
+    Right a -> return a
 
 --------------------------------------------------------------------------------
+-- | Create a 'TheMovieDB' value representing an error.
+tmdbError :: Error -> TheMovieDB a
+tmdbError = TheMovieDB . lift . left
+
+--------------------------------------------------------------------------------
+-- | Execute requests for TheMovieDB with the given API key and produce
+-- either an error or a result.
+--
+-- This version creates a temporary 'Manager' using
+-- 'tlsManagerSettings'.  If you want to use an existing 'Manager' you
+-- should use 'runTheMovieDBWithManager' instead.
 runTheMovieDB
-  :: Key
-  -> TheMovieDB a
-  -> IO (Either Error a)
+  :: Key                        -- ^ The API key to include in all requests.
+  -> TheMovieDB a               -- ^ The API calls to make.
+  -> IO (Either Error a)        -- ^ Response or error.
 runTheMovieDB k t =
   withManager tlsManagerSettings (\m -> runTheMovieDBWithManager m k t)
 
 --------------------------------------------------------------------------------
+-- | Execute requests for TheMovieDB with the given API key and produce
+-- either an error or a result.
+--
+-- This version allows you to provide a 'Manager' value which should
+-- have been created to allow TLS requests (e.g., with 'tlsManagerSettings').
 runTheMovieDBWithManager
-  :: Manager
-  -> Key
-  -> TheMovieDB a
-  -> IO (Either Error a)
+  :: Manager                    -- ^ The 'Manager' to use.
+  -> Key                        -- ^ The API key to include in all requests.
+  -> TheMovieDB a               -- ^ The API calls to make.
+  -> IO (Either Error a)        -- ^ Response or error.
 runTheMovieDBWithManager m k t =
   runTheMovieDBWithRequestFunction (apiGET m k) t
 

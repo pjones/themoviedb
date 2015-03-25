@@ -18,20 +18,10 @@ module Network.API.TheMovieDB.Search
 
 --------------------------------------------------------------------------------
 import Control.Applicative
-import Data.Aeson
 import Data.Text (Text)
-import Network.API.TheMovieDB.Internal.Generic
+import Network.API.TheMovieDB.Internal.SearchResults
+import Network.API.TheMovieDB.Internal.TheMovieDB
 import Network.API.TheMovieDB.Types
-
---------------------------------------------------------------------------------
--- Internal wrapper to parse a list of movies from JSON.
-newtype SearchResults = SearchResults {searchResults :: [Movie]}
-                        deriving (Eq, Show)
-
---------------------------------------------------------------------------------
-instance FromJSON SearchResults where
-  parseJSON (Object v) = SearchResults <$> v .: "results"
-  parseJSON _          = empty
 
 --------------------------------------------------------------------------------
 -- | Internal function to translate search results to a list of movies.
@@ -39,11 +29,10 @@ fetchSearchResults :: Text -> TheMovieDB SearchResults
 fetchSearchResults query = getAndParse "search/movie" [("query", Just query)]
 
 --------------------------------------------------------------------------------
--- | Search TheMovieDB using the given query string and return either
--- an 'Error' if something went wrong or a list of matching 'Movie's.
+-- | Search TheMovieDB using the given query string.
 --
 -- The movies returned will not have all their fields completely
 -- filled out, to get a complete record you'll need to follow this
--- call up with a call to 'fetchErr' or 'fetch'.
+-- call up with a call to 'fetch'.
 search :: Text -> TheMovieDB [Movie]
 search query = searchResults <$> fetchSearchResults query

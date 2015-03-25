@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 {-
 
 This file is part of the Haskell package themoviedb. It is subject to
@@ -10,16 +12,21 @@ contained in the LICENSE file.
 -}
 
 --------------------------------------------------------------------------------
-module Network.API.TheMovieDB.Config
-       ( config
+module Network.API.TheMovieDB.Internal.SearchResults
+       ( SearchResults (..)
        ) where
 
 --------------------------------------------------------------------------------
-import Network.API.TheMovieDB.Internal.TheMovieDB
+import Control.Applicative
+import Data.Aeson
 import Network.API.TheMovieDB.Types
 
 --------------------------------------------------------------------------------
--- | Fetch the API configuration information such as base URLs for
--- movie posters.
-config :: TheMovieDB Configuration
-config = getAndParse "configuration" []
+-- Internal wrapper to parse a list of movies from JSON.
+newtype SearchResults = SearchResults {searchResults :: [Movie]}
+                        deriving (Eq, Show)
+
+--------------------------------------------------------------------------------
+instance FromJSON SearchResults where
+  parseJSON (Object v) = SearchResults <$> v .: "results"
+  parseJSON _          = empty
