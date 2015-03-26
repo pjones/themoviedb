@@ -60,7 +60,7 @@ getAndParse path params = do
   body <- runRequest path params
 
   case eitherDecode body of
-    Left  e -> tmdbError $ ParseError ("bad JSON: " ++ e) (Just body)
+    Left  e -> tmdbError $ ResponseParseError ("bad JSON: " ++ e) (Just body)
     Right a -> return a
 
 --------------------------------------------------------------------------------

@@ -18,8 +18,9 @@ module Network.API.TheMovieDB.Internal.Types
        ) where
 
 --------------------------------------------------------------------------------
-import Data.Text (Text)
 import Data.ByteString.Lazy (ByteString)
+import Data.Text (Text)
+import Network.HTTP.Client (HttpException)
 
 --------------------------------------------------------------------------------
 -- | Type for the API key issued by TheMovieDB.
@@ -32,11 +33,22 @@ type Body = ByteString
 
 --------------------------------------------------------------------------------
 -- | Possible errors returned by the API.
-data Error = NetworkError String
-             -- ^ Network or HTTP error.
+data Error = InvalidKeyError
+             -- ^ Missing or invalid API key.  Make sure you are using
+             -- a valid API key issued by
+             -- <https://www.themoviedb.org/faq/api>.
+
+           | HttpExceptionError HttpException
+             -- ^ An exception relating to HTTP was thrown while
+             -- interacting with the API.
              
-           | ParseError String (Maybe ByteString)
+           | ServiceError String
+             -- ^ The HTTP interaction with the API service did not
+             -- result in a successful response.  Information about
+             -- the failure is encoded in the String.
+             
+           | ResponseParseError String (Maybe ByteString)
              -- ^ Invalid or error response from the API.
              
-           deriving (Eq, Show)
+           deriving (Show)
 

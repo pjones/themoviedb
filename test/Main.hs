@@ -31,7 +31,7 @@ loadBadMovieFile _ _ = liftIO $
 
 --------------------------------------------------------------------------------
 fakeNetworkError :: RequestFunction
-fakeNetworkError _ _ = return $ Left $ NetworkError "fake outage"
+fakeNetworkError _ _ = return $ Left $ ServiceError "fake outage"
 
 --------------------------------------------------------------------------------
 goodMovieFieldsTest = TestCase $ do
@@ -57,14 +57,14 @@ goodMovieFieldsTest = TestCase $ do
 badMovieJSONTest = TestCase $ do
   result <- runTheMovieDBWithRequestFunction loadBadMovieFile (fetch 0)
   case result of
-    Left (ParseError e _) -> return ()
-    _                     -> assertFailure "JSON should have been bad"
+    Left (ResponseParseError e _) -> return ()
+    _                             -> assertFailure "JSON should have been bad"
 
 --------------------------------------------------------------------------------
 shouldHaveNetworkErrorTest = TestCase $ do
   result <- runTheMovieDBWithRequestFunction fakeNetworkError (fetch 0)
   case result of
-    Left (NetworkError e) -> return ()
+    Left (ServiceError e) -> return ()
     _                     -> assertFailure "should have network error"
 
 --------------------------------------------------------------------------------

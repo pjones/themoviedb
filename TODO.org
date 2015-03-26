@@ -1,6 +1,6 @@
 #+title: TheMovieDB To-do List
 
-* Milestone: Release 0.2.0.0
+* Milestone: Release 1.0.0.0
 ** DONE Switch to HTTPS/SSL/TLS (via http-conduit)
    CLOSED: [2015-03-20 Fri 18:02]
    - This requires using something other than Network.HTTP.
