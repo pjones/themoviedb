@@ -12,6 +12,7 @@ contained in the LICENSE file.
 -}
 
 --------------------------------------------------------------------------------
+-- | Utility type for processing movie search results.
 module Network.API.TheMovieDB.Internal.SearchResults
        ( SearchResults (..)
        ) where
@@ -22,7 +23,7 @@ import Data.Aeson
 import Network.API.TheMovieDB.Types
 
 --------------------------------------------------------------------------------
--- Internal wrapper to parse a list of movies from JSON.
+-- | Internal wrapper to parse a list of movies from JSON.
 newtype SearchResults = SearchResults {searchResults :: [Movie]}
                         deriving (Eq, Show)
 

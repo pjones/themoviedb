@@ -15,24 +15,41 @@ This library provides some data types and functions for fetching movie
 metadata from <http://TheMovieDB.org>.  To use this library start by
 requesting an API key from <http://docs.themoviedb.apiary.io>.
 
+Example:
+
+@
+import Network.API.TheMovieDB
+
+main :: IO ()
+main = do
+  -- The API key assigned to you (as a 'Text' value).
+  let key = "your API key"
+
+  -- The 'fetch' function will get a 'Movie' record based on its ID.
+  result <- runTheMovieDB key (fetchMovie 9340)
+
+  -- Do something with the result (or error).
+  putStrLn (show result)
+@
+
 This library also includes an example executable in the @example@
 directory.
 -}
 module Network.API.TheMovieDB
   ( -- * Types
-    Movie(..)
+    MovieID
+  , Movie(..)
+  , GenreID
   , Genre(..)
   , Error(..)
   , Key
-  , MovieID
-  , GenreID
 
     -- * API Functions
   , TheMovieDB
   , runTheMovieDB
   , runTheMovieDBWithManager
-  , fetch
-  , search
+  , fetchMovie
+  , searchMovies
 
     -- * Utility Types and Functions
   , Configuration
@@ -41,5 +58,4 @@ module Network.API.TheMovieDB
   ) where
 
 import Network.API.TheMovieDB.Types
-import Network.API.TheMovieDB.Config
-import Network.API.TheMovieDB.Action
+import Network.API.TheMovieDB.Actions

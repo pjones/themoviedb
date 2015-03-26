@@ -12,6 +12,7 @@ contained in the LICENSE file.
 -}
 
 --------------------------------------------------------------------------------
+-- | Utility type for working with release dates.
 module Network.API.TheMovieDB.Internal.ReleaseDate
        ( ReleaseDate (..)
        ) where
@@ -24,12 +25,13 @@ import Data.Time (parseTime, Day(..))
 import System.Locale (defaultTimeLocale)
 
 --------------------------------------------------------------------------------
--- Type wrapper for Day to parse a movie's release date.
+-- | A simple type wrapper around 'Day' in order to parse a movie's
+-- release date, which may be null or empty.
 newtype ReleaseDate = ReleaseDate
   {releaseDate :: Maybe Day} deriving (Eq, Show)
 
 --------------------------------------------------------------------------------
--- Parse release dates in JSON.
+-- | Parse release dates in JSON.
 instance FromJSON ReleaseDate where
   parseJSON (Null) = return (ReleaseDate Nothing)
   parseJSON (String t)

@@ -21,6 +21,8 @@ module Network.API.TheMovieDB.Types.Movie
 --------------------------------------------------------------------------------
 import Control.Applicative
 import Data.Aeson
+import Data.Monoid
+import Data.Text (Text)
 import Data.Time (Day (..))
 import Network.API.TheMovieDB.Internal.Configuration
 import Network.API.TheMovieDB.Internal.ReleaseDate
@@ -40,10 +42,10 @@ data Movie = Movie
   { movieID :: MovieID
     -- ^ TheMovieDB unique ID.
 
-  , movieTitle :: String
+  , movieTitle :: Text
     -- ^ The name/title of the movie.
 
-  , movieOverview :: String
+  , movieOverview :: Text
     -- ^ Short plot summary.
 
   , movieGenres :: [Genre]
@@ -52,7 +54,7 @@ data Movie = Movie
   , moviePopularity :: Double
     -- ^ Popularity ranking.
 
-  , moviePosterPath :: String
+  , moviePosterPath :: Text
     -- ^ Incomplete URL for poster image.  See 'moviePosterURLs'.
 
   , movieReleaseDate :: Maybe Day
@@ -61,7 +63,7 @@ data Movie = Movie
   , movieAdult :: Bool
     -- ^ TheMovieDB adult movie flag.
 
-  , movieIMDB :: String
+  , movieIMDB :: Text
     -- ^ IMDB.com ID.
 
   , movieRunTime :: Int
@@ -86,7 +88,7 @@ instance FromJSON Movie where
 
 --------------------------------------------------------------------------------
 -- | Return a list of URLs for all possible movie posters.
-moviePosterURLs :: Configuration -> Movie -> [String]
-moviePosterURLs c m = [base ++ size ++ poster | size <- cfgPosterSizes c]
+moviePosterURLs :: Configuration -> Movie -> [Text]
+moviePosterURLs c m = [base <> size <> poster | size <- cfgPosterSizes c]
   where base   = cfgImageBaseURL c
         poster = moviePosterPath m

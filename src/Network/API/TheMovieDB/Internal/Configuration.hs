@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings,  DeriveGeneric #-}
 
 {-
 
@@ -20,6 +20,10 @@ module Network.API.TheMovieDB.Internal.Configuration
 --------------------------------------------------------------------------------
 import Control.Applicative
 import Data.Aeson
+import Data.Binary
+import Data.Text (Text)
+import Data.Text.Binary ()
+import GHC.Generics (Generic)
 
 --------------------------------------------------------------------------------
 -- | TheMovieDB API tries to preserve bandwidth by omitting
@@ -30,11 +34,22 @@ import Data.Aeson
 --
 -- A helper function is provided ('moviePosterURLs') that constructs a
 -- list of all poster URLs given a 'Movie' and 'Configuration'.
+--
+-- According to the API documentation for TheMovieDB, you should cache
+-- the 'Configuration' value and only request it every few days.
+-- Therefore, it is an instance of the 'Binary' class so it can be
+-- serialized to and from a cache file on disk.
+--
+-- Alternatively, the 'FromJSON' and 'ToJSON' instances can be used to
+-- cache the 'Configuration' value.
 data Configuration = Configuration
-  { cfgImageBaseURL    :: String   -- ^ The base URL for images.
-  , cfgImageSecBaseURL :: String   -- ^ Base URL for secure images.
-  , cfgPosterSizes     :: [String] -- ^ List of possible image sizes.
-  }
+  { cfgImageBaseURL    :: Text   -- ^ The base URL for images.
+  , cfgImageSecBaseURL :: Text   -- ^ Base URL for secure images.
+  , cfgPosterSizes     :: [Text] -- ^ List of possible image sizes.
+  } deriving (Generic)
+
+--------------------------------------------------------------------------------
+instance Binary Configuration
 
 --------------------------------------------------------------------------------
 instance FromJSON Configuration where
@@ -45,3 +60,11 @@ instance FromJSON Configuration where
     where images key      = (v .: "images") >>= (.:  key)
           imagesM key def = (v .: "images") >>= (\x -> x .:? key .!= def)
   parseJSON _ = empty
+
+--------------------------------------------------------------------------------
+instance ToJSON Configuration where
+  toJSON c = object [ "images" .= object
+    [ "base_url"        .= cfgImageBaseURL c
+    , "secure_base_url" .= cfgImageSecBaseURL c
+    , "poster_sizes"    .= cfgPosterSizes c
+    ]]

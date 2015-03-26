@@ -1,17 +1,19 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 --------------------------------------------------------------------------------
 module Main (main) where
 
 --------------------------------------------------------------------------------
 -- http://www.haskell.org/haskellwiki/HUnit_1.0_User%27s_Guide
-import Control.Monad.IO.Class (liftIO)
 import Control.Monad (liftM, when)
+import Control.Monad.IO.Class (liftIO)
 import qualified Data.ByteString.Lazy.Char8 as B
-import Network.API.TheMovieDB
-import Network.API.TheMovieDB.Internal.Types
-import Network.API.TheMovieDB.Internal.TheMovieDB
-import System.Exit (exitFailure)
-import Data.List (isPrefixOf)
+import qualified Data.Text as T
 import Data.Time (fromGregorian)
+import Network.API.TheMovieDB
+import Network.API.TheMovieDB.Internal.TheMovieDB
+import Network.API.TheMovieDB.Internal.Types
+import System.Exit (exitFailure)
 
 --------------------------------------------------------------------------------
 import Test.HUnit
@@ -35,14 +37,14 @@ fakeNetworkError _ _ = return $ Left $ ServiceError "fake outage"
 
 --------------------------------------------------------------------------------
 goodMovieFieldsTest = TestCase $ do
-  result <- runTheMovieDBWithRequestFunction loadGoodMovieFile (fetch 0)
+  result <- runTheMovieDBWithRequestFunction loadGoodMovieFile (fetchMovie 0)
   case result of
     Left    err -> assertFailure $ show err
     Right movie -> do
       assertEqual "movieID" 105 (movieID movie)
       assertEqual "movieTitle" "Back to the Future" (movieTitle movie)
       assertBool "movieOverview" $
-        "Eighties teenager" `isPrefixOf` movieOverview movie
+        "Eighties teenager" `T.isPrefixOf` movieOverview movie
       assertEqual "movieGenres" 4 (length $ movieGenres movie)
       assertEqual "moviePopularity" 80329.688 $ moviePopularity movie
       assertEqual "moviePosterPath" "/pTpxQB1N0waaSc3OSn0e9oc8kx9.jpg" $
@@ -55,14 +57,14 @@ goodMovieFieldsTest = TestCase $ do
 
 --------------------------------------------------------------------------------
 badMovieJSONTest = TestCase $ do
-  result <- runTheMovieDBWithRequestFunction loadBadMovieFile (fetch 0)
+  result <- runTheMovieDBWithRequestFunction loadBadMovieFile (fetchMovie 0)
   case result of
     Left (ResponseParseError e _) -> return ()
     _                             -> assertFailure "JSON should have been bad"
 
 --------------------------------------------------------------------------------
 shouldHaveNetworkErrorTest = TestCase $ do
-  result <- runTheMovieDBWithRequestFunction fakeNetworkError (fetch 0)
+  result <- runTheMovieDBWithRequestFunction fakeNetworkError (fetchMovie 0)
   case result of
     Left (ServiceError e) -> return ()
     _                     -> assertFailure "should have network error"

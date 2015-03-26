@@ -12,9 +12,10 @@ contained in the LICENSE file.
 -}
 
 --------------------------------------------------------------------------------
-module Network.API.TheMovieDB.Action
-       ( fetch
-       , search
+module Network.API.TheMovieDB.Actions
+       ( fetchMovie
+       , searchMovies
+       , config
        ) where
 
 --------------------------------------------------------------------------------
@@ -26,8 +27,8 @@ import Network.API.TheMovieDB.Types
 
 --------------------------------------------------------------------------------
 -- | Fetch the metadata for the movie with the given ID.
-fetch :: MovieID -> TheMovieDB Movie
-fetch mid = getAndParse ("movie/" ++ show mid) []
+fetchMovie :: MovieID -> TheMovieDB Movie
+fetchMovie mid = getAndParse ("movie/" ++ show mid) []
 
 --------------------------------------------------------------------------------
 -- | Internal function to translate search results to a list of movies.
@@ -40,5 +41,12 @@ fetchSearchResults query = getAndParse "search/movie" [("query", Just query)]
 -- The movies returned will not have all their fields completely
 -- filled out, to get a complete record you'll need to follow this
 -- call up with a call to 'fetch'.
-search :: Text -> TheMovieDB [Movie]
-search query = searchResults <$> fetchSearchResults query
+searchMovies :: Text -> TheMovieDB [Movie]
+searchMovies query = searchResults <$> fetchSearchResults query
+
+--------------------------------------------------------------------------------
+-- | Fetch the API configuration information such as base URLs for
+-- movie posters.  The resulting configuration value should be cached
+-- and only requested every few days.
+config :: TheMovieDB Configuration
+config = getAndParse "configuration" []

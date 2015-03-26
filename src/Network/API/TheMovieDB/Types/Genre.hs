@@ -21,6 +21,7 @@ module Network.API.TheMovieDB.Types.Genre
 import Control.Applicative
 import Data.Aeson
 import Data.Aeson.Types (typeMismatch)
+import Data.Text (Text)
 
 --------------------------------------------------------------------------------
 -- | Type for representing unique genre IDs.
@@ -30,7 +31,7 @@ type GenreID = Int
 -- | Metadata for a genre.
 data Genre = Genre
   { genreID   :: GenreID -- ^ TheMovieDB unique ID.
-  , genreName :: String  -- ^ The name of the genre.
+  , genreName :: Text    -- ^ The name of the genre.
   } deriving (Eq, Show)
 
 --------------------------------------------------------------------------------

@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 {-
 
 This file is part of the Haskell package themoviedb. It is subject to
@@ -14,7 +16,6 @@ module Main (main) where
 
 --------------------------------------------------------------------------------
 import Control.Monad.IO.Class (liftIO)
-import Data.List (intercalate)
 import Data.Maybe (listToMaybe)
 import Data.Text (Text)
 import qualified Data.Text as T
@@ -29,7 +30,7 @@ import Text.Printf (printf)
 -- | Simple banner style printing of a 'Movie'.
 printMovieHeader :: Movie -> IO ()
 printMovieHeader m =
-  printf "%8d: %s (%s)\n" (movieID m) (movieTitle m) year
+  printf "%8d: %s (%s)\n" (movieID m) (T.unpack $ movieTitle m) year
   where year = case movieReleaseDate m of
                  Just d  -> formatTime defaultTimeLocale "%Y" d
                  Nothing -> "----"
@@ -41,14 +42,14 @@ printMovieDetails m =
   do putStrLn $ "Popularity: " ++ show (moviePopularity m)
      putStrLn $ strJoin $ map genreName (movieGenres m)
      putStrLn "-- "
-     putStrLn $ movieOverview m
-  where strJoin = intercalate ", "
+     putStrLn $ T.unpack (movieOverview m)
+  where strJoin = T.unpack . T.intercalate ", "
 
 --------------------------------------------------------------------------------
 -- | Search for movies with a query string.
 searchAndListMovies :: Text -> TheMovieDB ()
 searchAndListMovies query = do
-  movies <- search query
+  movies <- searchMovies query
   liftIO $ mapM_ printMovieHeader movies
 
 --------------------------------------------------------------------------------
@@ -56,11 +57,11 @@ searchAndListMovies query = do
 fetchAndPrintMovie :: MovieID -> TheMovieDB ()
 fetchAndPrintMovie mid = do
   cfg <- config
-  movie <- fetch mid
+  movie <- fetchMovie mid
 
   liftIO $ do
     printMovieHeader movie
-    mapM_ putStrLn (moviePosterURLs cfg movie)
+    mapM_ (putStrLn . T.unpack) (moviePosterURLs cfg movie)
     printMovieDetails movie
 
 --------------------------------------------------------------------------------

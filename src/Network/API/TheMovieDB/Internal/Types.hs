@@ -10,6 +10,8 @@ contained in the LICENSE file.
 -}
 
 --------------------------------------------------------------------------------
+-- | Simple types and synonyms, mostly to make the type signatures
+-- easier to read.
 module Network.API.TheMovieDB.Internal.Types
        ( Key
        , Body
@@ -27,8 +29,11 @@ import Network.HTTP.Client (HttpException)
 type Key = Text
 
 --------------------------------------------------------------------------------
--- Internal types.
+-- | URL path.
 type Path = String
+            
+--------------------------------------------------------------------------------            
+-- | HTTP body.            
 type Body = ByteString
 
 --------------------------------------------------------------------------------
