@@ -15,12 +15,14 @@ contained in the LICENSE file.
 -- | Internal configuration information for TheMovieDB API.
 module Network.API.TheMovieDB.Internal.Configuration
        ( Configuration (..)
+       , posterURLs
        ) where
 
 --------------------------------------------------------------------------------
 import Control.Applicative
 import Data.Aeson
 import Data.Binary
+import Data.Monoid
 import Data.Text (Text)
 import Data.Text.Binary ()
 import GHC.Generics (Generic)
@@ -68,3 +70,9 @@ instance ToJSON Configuration where
     , "secure_base_url" .= cfgImageSecBaseURL c
     , "poster_sizes"    .= cfgPosterSizes c
     ]]
+
+
+--------------------------------------------------------------------------------
+-- | Return a list of URLs for all possible posters posters.
+posterURLs :: Configuration -> Text -> [Text]
+posterURLs c p = [cfgImageBaseURL c <> size <> p | size <- cfgPosterSizes c]

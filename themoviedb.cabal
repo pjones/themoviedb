@@ -42,14 +42,17 @@ library
     Network.API.TheMovieDB
     Network.API.TheMovieDB.Actions
     Network.API.TheMovieDB.Internal.Configuration
+    Network.API.TheMovieDB.Internal.Date
     Network.API.TheMovieDB.Internal.HTTP
-    Network.API.TheMovieDB.Internal.ReleaseDate
     Network.API.TheMovieDB.Internal.SearchResults
     Network.API.TheMovieDB.Internal.TheMovieDB
     Network.API.TheMovieDB.Internal.Types
     Network.API.TheMovieDB.Types
+    Network.API.TheMovieDB.Types.Episode
     Network.API.TheMovieDB.Types.Genre
     Network.API.TheMovieDB.Types.Movie
+    Network.API.TheMovieDB.Types.Season
+    Network.API.TheMovieDB.Types.TV
 
   default-language: Haskell2010
   hs-source-dirs: src
@@ -83,7 +86,7 @@ executable tmdb
   hs-source-dirs: example
   main-is: Main.hs
 
-  ghc-options: -Wall
+  ghc-options: -Wall -fwarn-incomplete-uni-patterns
 
   if flag(maintainer)
     ghc-options: -Werror
@@ -98,6 +101,14 @@ test-suite test
   default-language: Haskell2010
   hs-source-dirs: test
   main-is: Main.hs
-  build-depends: HUnit
+  other-modules: TestHelper MovieTest TVTest
+
+  ghc-options: -Wall -fwarn-incomplete-uni-patterns
+
+  if flag(maintainer)
+    ghc-options: -Werror
+
+  build-depends: tasty       >= 0.10 && < 0.11
+               , tasty-hunit >= 0.9  && < 0.10
                , themoviedb, base, unix, old-locale, time
                , text, aeson, network, bytestring, transformers

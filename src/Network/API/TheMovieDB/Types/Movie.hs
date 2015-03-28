@@ -13,33 +13,29 @@ contained in the LICENSE file.
 
 --------------------------------------------------------------------------------
 module Network.API.TheMovieDB.Types.Movie
-       ( MovieID
-       , Movie(..)
+       ( Movie(..)
        , moviePosterURLs
        ) where
 
 --------------------------------------------------------------------------------
 import Control.Applicative
 import Data.Aeson
-import Data.Monoid
+import Data.Aeson.Types (typeMismatch)
 import Data.Text (Text)
 import Data.Time (Day (..))
 import Network.API.TheMovieDB.Internal.Configuration
-import Network.API.TheMovieDB.Internal.ReleaseDate
+import Network.API.TheMovieDB.Internal.Date
+import Network.API.TheMovieDB.Internal.Types
 import Network.API.TheMovieDB.Types.Genre
-
---------------------------------------------------------------------------------
--- | Type for representing unique movie IDs.
-type MovieID = Int
 
 --------------------------------------------------------------------------------
 -- | Metadata for a movie.
 --
---   * The 'moviePosterPath' is an incomplete URL.  To construct a
---     complete URL you'll need to use the 'Configuration' type.  You
---     can also use 'moviePosterURLs'.
+--   * The 'moviePosterPath' field is an incomplete URL.  To construct
+--     a complete URL you'll need to use the 'Configuration' type and
+--     the 'moviePosterURLs' helper function.
 data Movie = Movie
-  { movieID :: MovieID
+  { movieID :: ItemID
     -- ^ TheMovieDB unique ID.
 
   , movieTitle :: Text
@@ -80,15 +76,13 @@ instance FromJSON Movie where
           <*> v .:? "genres"      .!= []
           <*> v .:? "popularity"  .!= 0.0
           <*> v .:? "poster_path" .!= ""
-          <*> (releaseDate <$> v .: "release_date")
+          <*> v .:: "release_date"
           <*> v .:? "adult"       .!= False
           <*> v .:? "imdb_id"     .!= ""
           <*> v .:? "runtime"     .!= 0
-  parseJSON _ = empty
+  parseJSON v = typeMismatch "Movie" v
 
 --------------------------------------------------------------------------------
 -- | Return a list of URLs for all possible movie posters.
 moviePosterURLs :: Configuration -> Movie -> [Text]
-moviePosterURLs c m = [base <> size <> poster | size <- cfgPosterSizes c]
-  where base   = cfgImageBaseURL c
-        poster = moviePosterPath m
+moviePosterURLs c m = posterURLs c (moviePosterPath m)

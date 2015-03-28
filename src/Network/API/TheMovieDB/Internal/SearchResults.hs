@@ -20,14 +20,13 @@ module Network.API.TheMovieDB.Internal.SearchResults
 --------------------------------------------------------------------------------
 import Control.Applicative
 import Data.Aeson
-import Network.API.TheMovieDB.Types
 
 --------------------------------------------------------------------------------
--- | Internal wrapper to parse a list of movies from JSON.
-newtype SearchResults = SearchResults {searchResults :: [Movie]}
-                        deriving (Eq, Show)
+-- | Internal wrapper to parse a list of results from JSON.
+newtype SearchResults a = SearchResults {searchResults :: [a]}
+                          deriving (Eq, Show)
 
 --------------------------------------------------------------------------------
-instance FromJSON SearchResults where
+instance (FromJSON a) => FromJSON (SearchResults a) where
   parseJSON (Object v) = SearchResults <$> v .: "results"
   parseJSON _          = empty

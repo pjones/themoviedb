@@ -13,7 +13,8 @@ contained in the LICENSE file.
 -- | Simple types and synonyms, mostly to make the type signatures
 -- easier to read.
 module Network.API.TheMovieDB.Internal.Types
-       ( Key
+       ( ItemID
+       , Key
        , Body
        , Path
        , Error (..)
@@ -23,6 +24,10 @@ module Network.API.TheMovieDB.Internal.Types
 import Data.ByteString.Lazy (ByteString)
 import Data.Text (Text)
 import Network.HTTP.Client (HttpException)
+
+--------------------------------------------------------------------------------
+-- | Type to represent IDs used by the API.
+type ItemID = Int
 
 --------------------------------------------------------------------------------
 -- | Type for the API key issued by TheMovieDB.

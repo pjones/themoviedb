@@ -37,19 +37,25 @@ directory.
 -}
 module Network.API.TheMovieDB
   ( -- * Types
-    MovieID
-  , Movie(..)
-  , GenreID
-  , Genre(..)
-  , Error(..)
+    Movie (..)
+  , TV (..)
+  , Season (..)
+  , Episode (..)
+  , Genre (..)
+  , Error (..)
+  , ItemID
   , Key
 
     -- * API Functions
   , TheMovieDB
   , runTheMovieDB
   , runTheMovieDBWithManager
-  , fetchMovie
   , searchMovies
+  , fetchMovie
+  , searchTV
+  , fetchTV
+  , fetchTVSeason
+  , fetchFullTVSeries
 
     -- * Utility Types and Functions
   , Configuration

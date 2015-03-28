@@ -13,13 +13,17 @@ contained in the LICENSE file.
 
 --------------------------------------------------------------------------------
 -- | Utility type for working with release dates.
-module Network.API.TheMovieDB.Internal.ReleaseDate
-       ( ReleaseDate (..)
+module Network.API.TheMovieDB.Internal.Date
+       ( Date (..)
+       , parseDay
+       , (.::)
        ) where
 
 --------------------------------------------------------------------------------
+import Control.Applicative
 import Data.Aeson
-import Data.Aeson.Types (typeMismatch)
+import Data.Aeson.Types (Parser, typeMismatch)
+import Data.Text (Text)
 import qualified Data.Text as T
 import Data.Time (parseTime, Day(..))
 import System.Locale (defaultTimeLocale)
@@ -27,16 +31,31 @@ import System.Locale (defaultTimeLocale)
 --------------------------------------------------------------------------------
 -- | A simple type wrapper around 'Day' in order to parse a movie's
 -- release date, which may be null or empty.
-newtype ReleaseDate = ReleaseDate
-  {releaseDate :: Maybe Day} deriving (Eq, Show)
+newtype Date = Date {day :: Maybe Day} deriving (Eq, Show)
+
+--------------------------------------------------------------------------------
+-- | Aeson helper function to parse dates in TheMovieDB API.
+parseDay :: Object -> Text -> Parser (Maybe Day)
+parseDay v key =
+  do m <- date
+     return $ case m of
+       Nothing -> Nothing
+       Just d  -> day d
+  where
+    date :: Parser (Maybe Date)
+    date = v .:? key <|> pure Nothing
+
+--------------------------------------------------------------------------------
+(.::) :: Object -> Text -> Parser (Maybe Day)
+(.::) = parseDay
 
 --------------------------------------------------------------------------------
 -- | Parse release dates in JSON.
-instance FromJSON ReleaseDate where
-  parseJSON (Null) = return (ReleaseDate Nothing)
+instance FromJSON Date where
+  parseJSON (Null) = return (Date Nothing)
   parseJSON (String t)
-    | T.null t  = return (ReleaseDate Nothing)
+    | T.null t  = return (Date Nothing)
     | otherwise = case parseTime defaultTimeLocale "%Y-%m-%d" (T.unpack t) of
-                    Just d -> return $ ReleaseDate (Just d)
-                    _      -> fail "could not parse release_date"
-  parseJSON v = typeMismatch "ReleaseDate" v
+                    Just d -> return $ Date (Just d)
+                    _      -> fail "could not parse TheMovieDB date field"
+  parseJSON v = typeMismatch "Date" v

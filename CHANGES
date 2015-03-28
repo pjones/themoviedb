@@ -6,6 +6,7 @@
 
   - Major rewrite of the interface
   - Removed utility functions for loading API keys
+  - Added types and functions for TV series information
   - Fixed bug: https://github.com/pjones/themoviedb/issues/1
   - Fixed bug: https://github.com/pjones/themoviedb/issues/2
 

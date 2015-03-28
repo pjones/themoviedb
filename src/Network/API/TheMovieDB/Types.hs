@@ -12,20 +12,26 @@ contained in the LICENSE file.
 --------------------------------------------------------------------------------
 module Network.API.TheMovieDB.Types
        ( TheMovieDB
+       , ItemID
        , Key
        , Error (..)
-       , GenreID
        , Genre (..)
-       , MovieID
        , Movie (..)
+       , TV (..)
+       , Season (..)
+       , Episode (..)
        , Configuration (..)
        , moviePosterURLs
        , runTheMovieDB
        , runTheMovieDBWithManager
        ) where
 
+--------------------------------------------------------------------------------
+import Network.API.TheMovieDB.Internal.Configuration
 import Network.API.TheMovieDB.Internal.TheMovieDB
 import Network.API.TheMovieDB.Internal.Types
-import Network.API.TheMovieDB.Internal.Configuration
+import Network.API.TheMovieDB.Types.Episode
 import Network.API.TheMovieDB.Types.Genre
 import Network.API.TheMovieDB.Types.Movie
+import Network.API.TheMovieDB.Types.Season
+import Network.API.TheMovieDB.Types.TV

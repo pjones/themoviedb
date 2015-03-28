@@ -13,8 +13,7 @@ contained in the LICENSE file.
 
 --------------------------------------------------------------------------------
 module Network.API.TheMovieDB.Types.Genre
-       ( GenreID
-       , Genre(..)
+       ( Genre(..)
        ) where
 
 --------------------------------------------------------------------------------
@@ -22,16 +21,13 @@ import Control.Applicative
 import Data.Aeson
 import Data.Aeson.Types (typeMismatch)
 import Data.Text (Text)
-
---------------------------------------------------------------------------------
--- | Type for representing unique genre IDs.
-type GenreID = Int
+import Network.API.TheMovieDB.Internal.Types
 
 --------------------------------------------------------------------------------
 -- | Metadata for a genre.
 data Genre = Genre
-  { genreID   :: GenreID -- ^ TheMovieDB unique ID.
-  , genreName :: Text    -- ^ The name of the genre.
+  { genreID   :: ItemID -- ^ TheMovieDB unique ID.
+  , genreName :: Text   -- ^ The name of the genre.
   } deriving (Eq, Show)
 
 --------------------------------------------------------------------------------
