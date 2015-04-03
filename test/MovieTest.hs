@@ -20,6 +20,16 @@ testSearchMovie = do
   assertEqual "length" 8 (length movies)
 
 --------------------------------------------------------------------------------
+testMoviePosterURLs :: Assertion
+testMoviePosterURLs = do
+  cfg   <- fakeTMDB "test/config-good.json" config
+  movie <- fakeTMDB "test/movie-good.json" (fetchMovie 0)
+  let urls = moviePosterURLs cfg movie
+      poster = "http://cf2.imgobject.com/t/p/w92/pTpxQB1N0waaSc3OSn0e9oc8kx9.jpg"
+  assertEqual "length" 6 (length urls)
+  assertEqual "url" poster (head urls)
+
+--------------------------------------------------------------------------------
 goodMovieFieldsTest :: Assertion
 goodMovieFieldsTest = do
   movie <- fakeTMDB "test/movie-good.json" (fetchMovie 0)
@@ -59,4 +69,5 @@ tests = testGroup "Movies"
   , testCase "Failure with bad JSON" badMovieJSONTest
   , testCase "Propagate network failure" shouldHaveNetworkErrorTest
   , testCase "Searching movies" testSearchMovie
+  , testCase "Movie poster URLs" testMoviePosterURLs
   ]
