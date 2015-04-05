@@ -44,6 +44,18 @@ testFetchSeason = do
   assertEqual "length" 14 (length $ seasonEpisodes season)
 
 --------------------------------------------------------------------------------
+testSeasonPoster :: Assertion
+testSeasonPoster = do
+  cfg    <- fakeTMDB "test/config-good.json" config
+  season <- fakeTMDB "test/season-good.json" (fetchTVSeason 0 0)
+
+  let expect = "http://cf2.imgobject.com/t/p/w92/2dxsbVMoxsYH0Pta2mbFjF7mhHr.jpg"
+      urls   = seasonPosterURLs cfg season
+
+  assertEqual "length" 6 (length urls)
+  assertEqual "poster" expect (head urls)
+
+--------------------------------------------------------------------------------
 testTVPoster :: Assertion
 testTVPoster = do
   cfg <- fakeTMDB "test/config-good.json" config
@@ -61,5 +73,6 @@ tests = testGroup "TV"
   [ testCase "Search fields" testSearchTV
   , testCase "Fetch fields"  testFetchTV
   , testCase "Season fields" testFetchSeason
+  , testCase "Season Poster" testSeasonPoster
   , testCase "TV Poster"     testTVPoster
   ]

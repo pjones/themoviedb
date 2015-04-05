@@ -47,7 +47,6 @@ library
     Network.API.TheMovieDB.Internal.SearchResults
     Network.API.TheMovieDB.Internal.TheMovieDB
     Network.API.TheMovieDB.Internal.Types
-    Network.API.TheMovieDB.Types
     Network.API.TheMovieDB.Types.Episode
     Network.API.TheMovieDB.Types.Genre
     Network.API.TheMovieDB.Types.Movie

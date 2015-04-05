@@ -25,9 +25,13 @@ module Network.API.TheMovieDB.Actions
 --------------------------------------------------------------------------------
 import Control.Applicative
 import Data.Text (Text)
+import Network.API.TheMovieDB.Internal.Configuration
 import Network.API.TheMovieDB.Internal.SearchResults
 import Network.API.TheMovieDB.Internal.TheMovieDB
-import Network.API.TheMovieDB.Types
+import Network.API.TheMovieDB.Internal.Types
+import Network.API.TheMovieDB.Types.Movie
+import Network.API.TheMovieDB.Types.Season
+import Network.API.TheMovieDB.Types.TV
 
 --------------------------------------------------------------------------------
 -- | Search TheMovieDB using the given query string.
