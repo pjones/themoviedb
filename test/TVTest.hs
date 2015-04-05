@@ -44,9 +44,22 @@ testFetchSeason = do
   assertEqual "length" 14 (length $ seasonEpisodes season)
 
 --------------------------------------------------------------------------------
+testTVPoster :: Assertion
+testTVPoster = do
+  cfg <- fakeTMDB "test/config-good.json" config
+  tv  <- fakeTMDB "test/tv-good.json" (fetchTV 0)
+
+  let expect = "http://cf2.imgobject.com/t/p/w92/mWNadwBZIx8NyEw4smGftYtHHrE.jpg"
+      urls   = tvPosterURLs cfg tv
+
+  assertEqual "length" 6 (length urls)
+  assertEqual "poster" expect (head urls)
+
+--------------------------------------------------------------------------------
 tests :: TestTree
 tests = testGroup "TV"
   [ testCase "Search fields" testSearchTV
   , testCase "Fetch fields"  testFetchTV
   , testCase "Season fields" testFetchSeason
+  , testCase "TV Poster"     testTVPoster
   ]

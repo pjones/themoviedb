@@ -55,10 +55,10 @@ fetchMovie mid = getAndParse ("movie/" ++ show mid) []
 --
 -- To get full 'TV' records you need to follow this function with a
 -- call to 'fetchTV' using the desired 'tvID' value.
-searchTV :: Text -> TheMovieDB [TV]                           
+searchTV :: Text -> TheMovieDB [TV]
 searchTV query = searchResults <$> search
   where search = getAndParse "search/tv" [("query", Just query)]
-                           
+
 --------------------------------------------------------------------------------
 -- | Fetch metadata for a 'TV' series given its TheMovieDB ID.  The
 -- metadata for 'Season's listed in the TV series will not have
@@ -67,14 +67,14 @@ searchTV query = searchResults <$> search
 -- After calling this function you should call 'fetchTVSeason' to fill
 -- in the 'Episode' metadata, or just begin with 'fetchFullTVSeries'.
 fetchTV :: ItemID -- ^ TheMovieDB ID for the TV series.
-        -> TheMovieDB TV                 
+        -> TheMovieDB TV
 fetchTV i = getAndParse ("tv/" ++ show i) []
 
 --------------------------------------------------------------------------------
 -- | Fetch metadata for a 'Season', including all 'Episode's.
 fetchTVSeason :: ItemID         -- ^ TheMovieDB ID for the TV series.
               -> Int            -- ^ Season number (not season ID).
-              -> TheMovieDB Season            
+              -> TheMovieDB Season
 fetchTVSeason i n = getAndParse ("tv/" ++ show i ++ "/season/" ++ show n) []
 
 --------------------------------------------------------------------------------
@@ -83,11 +83,11 @@ fetchTVSeason i n = getAndParse ("tv/" ++ show i ++ "/season/" ++ show n) []
 --
 -- This function will make multiple HTTP requests to TheMovieDB API.
 fetchFullTVSeries :: ItemID -- ^ TheMovieDB ID for the TV series.
-                  -> TheMovieDB TV                    
+                  -> TheMovieDB TV
 fetchFullTVSeries i = do
   tv      <- fetchTV i
-  seasons <- mapM (fetchTVSeason i) (map seasonNumber $ tvSeasons tv)
-  return tv {tvSeasons = seasons}             
+  seasons <- mapM (fetchTVSeason i . seasonNumber) (tvSeasons tv)
+  return tv {tvSeasons = seasons}
 
 --------------------------------------------------------------------------------
 -- | Fetch the API configuration information such as base URLs for

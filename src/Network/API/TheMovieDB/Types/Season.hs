@@ -58,7 +58,7 @@ data Season = Season
 
 --------------------------------------------------------------------------------
 instance FromJSON Season where
-  parseJSON (Object v) = do
+  parseJSON (Object v) =
     Season <$> v .:  "id"
            <*> v .:  "season_number" .!= 0
            <*> v .:: "air_date"

@@ -22,6 +22,9 @@ module Network.API.TheMovieDB.Types
        , Episode (..)
        , Configuration (..)
        , moviePosterURLs
+       , tvPosterURLs
+       , seasonPosterURLs
+       , episodeStillURLs
        , runTheMovieDB
        , runTheMovieDBWithManager
        ) where

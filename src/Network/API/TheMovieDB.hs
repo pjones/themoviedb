@@ -61,6 +61,9 @@ module Network.API.TheMovieDB
   , Configuration
   , config
   , moviePosterURLs
+  , tvPosterURLs
+  , seasonPosterURLs
+  , episodeStillURLs
   ) where
 
 import Network.API.TheMovieDB.Types

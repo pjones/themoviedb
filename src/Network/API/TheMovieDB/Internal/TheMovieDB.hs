@@ -93,8 +93,7 @@ runTheMovieDBWithManager
   -> Key                        -- ^ The API key to include in all requests.
   -> TheMovieDB a               -- ^ The API calls to make.
   -> IO (Either Error a)        -- ^ Response or error.
-runTheMovieDBWithManager m k t =
-  runTheMovieDBWithRequestFunction (apiGET m k) t
+runTheMovieDBWithManager m k = runTheMovieDBWithRequestFunction (apiGET m k)
 
 --------------------------------------------------------------------------------
 -- | Low-level interface for executing a 'TheMovieDB' using the given

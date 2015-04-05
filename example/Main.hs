@@ -134,7 +134,7 @@ main = do
       _                     -> liftIO (putStrLn usage >> exitFailure)
 
   case result of
-    Left err -> putStrLn (show err) >> exitFailure
+    Left err -> print err >> exitFailure
     Right _  -> exitSuccess
 
   where usage = "Usage: tmdb key {search|fetch|tsearch|tfetch|season|tfull}\n\n" ++
