@@ -78,6 +78,10 @@ data TV = TV
   } deriving (Eq, Show)
 
 --------------------------------------------------------------------------------
+instance Ord TV where
+  compare a b = tvID a `compare` tvID b
+
+--------------------------------------------------------------------------------
 instance FromJSON TV where
   parseJSON (Object v) =
     TV <$> v .:  "id"

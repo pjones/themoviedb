@@ -57,6 +57,10 @@ data Season = Season
   } deriving (Eq, Show)
 
 --------------------------------------------------------------------------------
+instance Ord Season where
+  compare a b = seasonNumber a `compare` seasonNumber b
+
+--------------------------------------------------------------------------------
 instance FromJSON Season where
   parseJSON (Object v) =
     Season <$> v .:  "id"

@@ -59,6 +59,11 @@ data Episode = Episode
   } deriving (Eq, Show)
 
 --------------------------------------------------------------------------------
+instance Ord Episode where
+  compare a b = compare (episodeSeasonNumber a, episodeNumber a)
+                        (episodeSeasonNumber b, episodeNumber b)
+
+--------------------------------------------------------------------------------
 instance FromJSON Episode where
   parseJSON (Object v) =
     Episode <$> v .:  "id"
