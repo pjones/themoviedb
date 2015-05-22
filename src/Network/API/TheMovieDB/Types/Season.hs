@@ -29,6 +29,12 @@ import Network.API.TheMovieDB.Internal.Types
 import Network.API.TheMovieDB.Types.Episode
 
 --------------------------------------------------------------------------------
+-- The following is a kludge to avoid the "redundant import" warning
+-- when using GHC >= 7.10.x.  This should be removed after we decide
+-- to stop supporting GHC < 7.10.x.
+import Prelude
+
+--------------------------------------------------------------------------------
 -- | Metadata for a TV Season.
 --
 --   * The 'seasonPosterPath' field is an incomplete URL.  To

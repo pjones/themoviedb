@@ -34,6 +34,12 @@ import Network.API.TheMovieDB.Types.Season
 import Network.API.TheMovieDB.Types.TV
 
 --------------------------------------------------------------------------------
+-- The following is a kludge to avoid the "redundant import" warning
+-- when using GHC >= 7.10.x.  This should be removed after we decide
+-- to stop supporting GHC < 7.10.x.
+import Prelude
+
+--------------------------------------------------------------------------------
 -- | Search TheMovieDB using the given query string.
 --
 -- The movies returned will not have all their fields completely

@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wwarn #-} -- Kludge to not error out on parseTime deprecation.
 {-# LANGUAGE OverloadedStrings #-}
 
 {-
@@ -25,8 +26,8 @@ import Data.Aeson
 import Data.Aeson.Types (Parser, typeMismatch)
 import Data.Text (Text)
 import qualified Data.Text as T
-import Data.Time (parseTime, Day(..))
-import System.Locale (defaultTimeLocale)
+import Data.Time (Day(..), parseTime)
+import Data.Time.Locale.Compat (defaultTimeLocale)
 
 --------------------------------------------------------------------------------
 -- | A simple type wrapper around 'Day' in order to parse a movie's

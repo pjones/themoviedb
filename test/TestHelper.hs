@@ -15,6 +15,12 @@ import Network.API.TheMovieDB.Internal.Types
 import Test.Tasty.HUnit
 
 --------------------------------------------------------------------------------
+-- The following is a kludge to avoid the "redundant import" warning
+-- when using GHC >= 7.10.x.  This should be removed after we decide
+-- to stop supporting GHC < 7.10.x.
+import Prelude
+
+--------------------------------------------------------------------------------
 fakeTMDB :: FilePath -> TheMovieDB a -> IO a
 fakeTMDB path m = do
   result <- runTheMovieDBWithRequestFunction (fileRequest path) m

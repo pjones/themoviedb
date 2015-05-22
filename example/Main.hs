@@ -20,10 +20,10 @@ import Data.Maybe (listToMaybe)
 import Data.Text (Text)
 import qualified Data.Text as T
 import Data.Time (formatTime)
+import Data.Time.Locale.Compat (defaultTimeLocale)
 import Network.API.TheMovieDB
 import System.Environment (getArgs)
 import System.Exit (exitFailure, exitSuccess)
-import System.Locale (defaultTimeLocale)
 import Text.Printf (printf)
 
 --------------------------------------------------------------------------------

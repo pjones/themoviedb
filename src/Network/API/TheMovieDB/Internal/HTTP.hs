@@ -25,6 +25,12 @@ import qualified Network.HTTP.Client as HC
 import Network.HTTP.Types
 
 --------------------------------------------------------------------------------
+-- The following is a kludge to avoid the "redundant import" warning
+-- when using GHC >= 7.10.x.  This should be removed after we decide
+-- to stop supporting GHC < 7.10.x.
+import Prelude
+
+--------------------------------------------------------------------------------
 -- | The base URL for the version of the API we're using.
 apiBaseURL :: String
 apiBaseURL = "https://api.themoviedb.org/3/"

@@ -34,6 +34,12 @@ import Network.HTTP.Client.TLS (tlsManagerSettings)
 import Network.HTTP.Types
 
 --------------------------------------------------------------------------------
+-- The following is a kludge to avoid the "redundant import" warning
+-- when using GHC >= 7.10.x.  This should be removed after we decide
+-- to stop supporting GHC < 7.10.x.
+import Prelude
+
+--------------------------------------------------------------------------------
 -- | The type for functions that make requests to the API (or pretend
 -- to make a request for testing purposes).
 type RequestFunction = (Path -> QueryText -> IO (Either Error Body))
