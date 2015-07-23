@@ -1,3 +1,5 @@
 /dist
 /.deps.mk
 /cabal.sandbox.config
+/.cabal-sandbox
+/default.nix
