@@ -2,6 +2,10 @@
 #+title: Version History
 #+startup: showall
 
+* 1.1.1.0 (July 22, 2015)
+
+  - Widen dependencies for aeson, either, and text-binary
+
 * 1.1.0.0 (May 22, 2015)
 
   - Added Ord instance for TV, Season, and Episode

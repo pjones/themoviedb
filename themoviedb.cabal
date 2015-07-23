@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 name:          themoviedb
-version:       1.1.0.0
+version:       1.1.1.0
 synopsis:      Haskell API bindings for http://themoviedb.org
 homepage:      http://github.com/pjones/themoviedb
 bug-reports:   http://github.com/pjones/themoviedb/issues
