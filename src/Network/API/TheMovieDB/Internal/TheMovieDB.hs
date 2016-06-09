@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wwarn #-} -- Kludge to not error out on withManager deprecation.
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 {-
@@ -85,7 +86,7 @@ runTheMovieDB
   :: Key                        -- ^ The API key to include in all requests.
   -> TheMovieDB a               -- ^ The API calls to make.
   -> IO (Either Error a)        -- ^ Response or error.
-runTheMovieDB k t =
+runTheMovieDB k t = -- TODO: replace withManager with newManager.
   withManager tlsManagerSettings (\m -> runTheMovieDBWithManager m k t)
 
 --------------------------------------------------------------------------------

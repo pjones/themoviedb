@@ -1,0 +1,8 @@
+resolver: lts-5.15
+
+packages:
+  - ../
+
+flags:
+  themoviedb:
+    maintainer: true

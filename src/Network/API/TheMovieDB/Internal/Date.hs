@@ -53,7 +53,7 @@ parseDay v key =
 --------------------------------------------------------------------------------
 -- | Parse release dates in JSON.
 instance FromJSON Date where
-  parseJSON (Null) = return (Date Nothing)
+  parseJSON Null = return (Date Nothing)
   parseJSON (String t)
     | T.null t  = return (Date Nothing)
     | otherwise = case parseTime defaultTimeLocale "%Y-%m-%d" (T.unpack t) of
