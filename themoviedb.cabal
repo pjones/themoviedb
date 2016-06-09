@@ -59,7 +59,6 @@ library
 
   if flag(maintainer)
     ghc-options: -Werror
-    ghc-prof-options: -prof -auto-all
 
   build-depends: aeson              >= 0.6   && < 0.10
                , base               >= 4.6   && < 5.0
@@ -86,6 +85,7 @@ executable tmdb
 
   if flag(maintainer)
     ghc-options: -Werror
+    ghc-prof-options: -auto-all
 
   build-depends: base
                , text
