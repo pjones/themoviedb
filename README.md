@@ -12,7 +12,7 @@ request an API key from TheMovieDB.  Follow the directions on the
 
 See the [Network.API.TheMovieDB][] module for complete documentation.
 
-[Network.API.TheMovieDB]: https://github.com/pjones/themoviedb/blob/master/Network/API/TheMovieDB.hs
+[Network.API.TheMovieDB]: https://github.com/pjones/themoviedb/blob/master/src/Network/API/TheMovieDB.hs
 
 # Example
 
