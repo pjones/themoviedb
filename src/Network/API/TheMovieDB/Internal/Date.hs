@@ -1,4 +1,3 @@
-{-# OPTIONS_GHC -Wwarn #-} -- Kludge to not error out on parseTime deprecation.
 {-# LANGUAGE OverloadedStrings #-}
 
 {-
@@ -26,7 +25,7 @@ import Data.Aeson
 import Data.Aeson.Types (Parser, typeMismatch)
 import Data.Text (Text)
 import qualified Data.Text as T
-import Data.Time (Day(..), parseTime)
+import Data.Time (Day(..), parseTimeM)
 import Data.Time.Locale.Compat (defaultTimeLocale)
 
 --------------------------------------------------------------------------------
@@ -56,7 +55,7 @@ instance FromJSON Date where
   parseJSON Null = return (Date Nothing)
   parseJSON (String t)
     | T.null t  = return (Date Nothing)
-    | otherwise = case parseTime defaultTimeLocale "%Y-%m-%d" (T.unpack t) of
-                    Just d -> return $ Date (Just d)
-                    _      -> fail "could not parse TheMovieDB date field"
+    | otherwise = do d <- parseTimeM True defaultTimeLocale "%Y-%m-%d" (T.unpack t)
+                     return $ Date (Just d)
+
   parseJSON v = typeMismatch "Date" v

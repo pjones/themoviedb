@@ -39,7 +39,7 @@ apiBaseURL = "https://api.themoviedb.org/3/"
 -- | Build a HTTP request that can be used to access the API.
 mkAPIRequest :: Key -> Path -> QueryText -> IO HC.Request
 mkAPIRequest key path params = do
-  req <- HC.parseUrl (apiBaseURL ++ path)
+  req <- HC.parseRequest (apiBaseURL ++ path)
 
   return $ req { HC.queryString    = query
                , HC.requestHeaders = headers

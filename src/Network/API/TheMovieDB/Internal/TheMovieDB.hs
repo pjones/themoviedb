@@ -1,4 +1,3 @@
-{-# OPTIONS_GHC -Wwarn #-} -- Kludge to not error out on withManager deprecation.
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 {-
@@ -30,7 +29,7 @@ import Control.Monad.Trans.Either
 import Data.Aeson
 import Network.API.TheMovieDB.Internal.HTTP
 import Network.API.TheMovieDB.Internal.Types
-import Network.HTTP.Client (Manager, withManager)
+import Network.HTTP.Client (Manager, newManager)
 import Network.HTTP.Client.TLS (tlsManagerSettings)
 import Network.HTTP.Types
 
@@ -86,8 +85,9 @@ runTheMovieDB
   :: Key                        -- ^ The API key to include in all requests.
   -> TheMovieDB a               -- ^ The API calls to make.
   -> IO (Either Error a)        -- ^ Response or error.
-runTheMovieDB k t = -- TODO: replace withManager with newManager.
-  withManager tlsManagerSettings (\m -> runTheMovieDBWithManager m k t)
+runTheMovieDB k t = do m <- newManager tlsManagerSettings
+                       runTheMovieDBWithManager m k t
+                       -- No need to closeManager anymore.
 
 --------------------------------------------------------------------------------
 -- | Execute requests for TheMovieDB with the given API key and produce

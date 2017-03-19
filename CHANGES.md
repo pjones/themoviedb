@@ -1,5 +1,9 @@
 # Version History
 
+## 1.1.3.0 (March 18, 2017)
+
+  - Widen dependencies for LTS-7.20
+
 ## 1.1.2.0 (June 9, 2016)
 
   - Widen dependencies for LTS-5.15

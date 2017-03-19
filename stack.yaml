@@ -1,7 +1,7 @@
-resolver: lts-5.15
+resolver: lts-7.20
 
 packages:
-  - ../
+  - ./
 
 flags:
   themoviedb:
