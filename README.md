@@ -1,5 +1,7 @@
 # TheMovieDB API for Haskell
 
+[![Build Status](https://travis-ci.org/pjones/themoviedb.svg?branch=master)](https://travis-ci.org/pjones/themoviedb)
+
 This is a simple library that provides functions for retrieving movie
 metadata from [TheMovieDB][] API.  To use this library you need to
 request an API key from TheMovieDB.  Follow the directions on the
