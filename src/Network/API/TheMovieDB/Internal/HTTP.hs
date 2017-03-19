@@ -57,6 +57,7 @@ apiGET manager key path params = do
   request  <- mkAPIRequest key path params
   response <- catch (Right <$> HC.httpLbs request manager) httpError
 
+
   return $ case response of
     Left  e -> Left e
     Right r
@@ -64,7 +65,6 @@ apiGET manager key path params = do
       | otherwise -> Left (ServiceError . show $ HC.responseStatus r)
 
   where
+    -- This should only be called for non-200 codes now.
     httpError :: HC.HttpException -> IO (Either Error (HC.Response Body))
-    httpError e = return $ case e of
-      HC.StatusCodeException (Status 401 _) _ _ -> Left InvalidKeyError
-      _                                         -> Left (HttpExceptionError e)
+    httpError _ = return $ Left InvalidKeyError

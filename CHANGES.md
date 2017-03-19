@@ -3,6 +3,7 @@
 ## 1.1.3.0 (March 18, 2017)
 
   - Widen dependencies for LTS-7.20
+  - Build with latest Hackage too!
 
 ## 1.1.2.0 (June 9, 2016)
 
