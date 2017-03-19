@@ -8,7 +8,7 @@ license:       MIT
 license-file:  LICENSE
 author:        Peter Jones <pjones@devalot.com>
 maintainer:    Peter Jones <pjones@devalot.com>
-copyright:     Copyright: (c) 2012-2015 Peter Jones
+copyright:     Copyright: (c) 2012-2017 Peter Jones
 category:      Network, API
 stability:     experimental
 tested-with:   GHC == 7.8.4, GHC == 7.10.3, GHC == 8.0.1

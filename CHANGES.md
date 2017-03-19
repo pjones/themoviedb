@@ -1,9 +1,12 @@
 # Version History
 
-## 1.1.3.0 (March 18, 2017)
+## 1.1.3.0 (March 19, 2017)
 
   - Widen dependencies for LTS-7.20
+
   - Build with latest Hackage too!
+
+  - Add Travis CI build status for supported versions of GHC
 
 ## 1.1.2.0 (June 9, 2016)
 
