@@ -23,3 +23,9 @@ There's an [example][] application in the `example` directory.
 Surprising, I know.
 
 [example]: https://github.com/pjones/themoviedb/blob/master/example/Main.hs
+
+[hackage]: http://hackage.haskell.org/package/themoviedb
+[hackage-shield]: https://img.shields.io/badge/hackage-v1.1.4.0-blue.svg
+
+[travis]: https://travis-ci.org/pjones/themoviedb
+[travis-shield]: https://travis-ci.org/pjones/themoviedb.svg?branch=master
