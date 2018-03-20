@@ -1,5 +1,11 @@
 # Version History
 
+## 1.1.4.0 (March 20, 2018)
+
+  - Update dependency versions
+
+  - Replace `Control.Monad.Trans.Either` with `ExceptT`
+
 ## 1.1.3.0 (March 19, 2017)
 
   - Widen dependencies for LTS-7.20

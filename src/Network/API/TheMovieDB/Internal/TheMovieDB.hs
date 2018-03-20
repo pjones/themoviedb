@@ -25,7 +25,7 @@ module Network.API.TheMovieDB.Internal.TheMovieDB
 --------------------------------------------------------------------------------
 import Control.Applicative
 import Control.Monad.Reader
-import Control.Monad.Trans.Either
+import Control.Monad.Trans.Except
 import Data.Aeson
 import Network.API.TheMovieDB.Internal.HTTP
 import Network.API.TheMovieDB.Internal.Types
@@ -47,7 +47,7 @@ type RequestFunction = (Path -> QueryText -> IO (Either Error Body))
 --------------------------------------------------------------------------------
 -- | Result type for operations involving TheMovieDB API.
 newtype TheMovieDB a =
-  TheMovieDB {unTMDB :: ReaderT RequestFunction (EitherT Error IO) a}
+  TheMovieDB {unTMDB :: ReaderT RequestFunction (ExceptT Error IO) a}
   deriving (Functor, Applicative, Monad, MonadIO)
 
 --------------------------------------------------------------------------------
@@ -56,8 +56,7 @@ newtype TheMovieDB a =
 runRequest :: Path -> QueryText -> TheMovieDB Body
 runRequest path params = TheMovieDB $ do
   func   <- ask
-  result <- liftIO (func path params)
-  lift (hoistEither result)
+  lift (ExceptT $ liftIO (func path params))
 
 --------------------------------------------------------------------------------
 -- | Helper function to preform an HTTP GET and decode the JSON result.
@@ -72,7 +71,7 @@ getAndParse path params = do
 --------------------------------------------------------------------------------
 -- | Create a 'TheMovieDB' value representing an error.
 tmdbError :: Error -> TheMovieDB a
-tmdbError = TheMovieDB . lift . left
+tmdbError = TheMovieDB . lift . throwE
 
 --------------------------------------------------------------------------------
 -- | Execute requests for TheMovieDB with the given API key and produce
@@ -109,4 +108,4 @@ runTheMovieDBWithRequestFunction
   :: RequestFunction            -- ^ The request function to use.
   -> TheMovieDB a               -- ^ The API calls to make.
   -> IO (Either Error a)        -- ^ Response.
-runTheMovieDBWithRequestFunction f t = runEitherT $ runReaderT (unTMDB t) f
+runTheMovieDBWithRequestFunction f t = runExceptT $ runReaderT (unTMDB t) f
