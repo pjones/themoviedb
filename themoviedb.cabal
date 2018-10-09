@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 name:          themoviedb
-version:       1.1.4.0
+version:       1.1.5.0
 synopsis:      Haskell API bindings for http://themoviedb.org
 homepage:      http://github.com/pjones/themoviedb
 bug-reports:   http://github.com/pjones/themoviedb/issues
@@ -60,9 +60,9 @@ library
   if flag(maintainer)
     ghc-options: -Werror
 
-  build-depends: aeson              >= 0.6    && < 1.4
+  build-depends: aeson              >= 0.6    && < 1.5
                , base               >= 4.6    && < 5.0
-               , binary             >= 0.7    && < 0.10
+               , binary             >= 0.7    && < 0.11
                , bytestring         >= 0.9    && < 0.11
                , http-client        >= 0.4.31 && < 0.6
                , http-client-tls    >= 0.2.2  && < 0.4
@@ -108,7 +108,7 @@ test-suite test
 
   build-depends: base
                , bytestring
-               , tasty       >= 0.10 && < 1.1
+               , tasty       >= 0.10 && < 1.2
                , tasty-hunit >= 0.9  && < 0.11
                , text
                , themoviedb
