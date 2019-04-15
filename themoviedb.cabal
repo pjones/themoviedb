@@ -1,17 +1,16 @@
 --------------------------------------------------------------------------------
 name:          themoviedb
-version:       1.1.5.0
+version:       1.1.5.1
 synopsis:      Haskell API bindings for http://themoviedb.org
-homepage:      http://github.com/pjones/themoviedb
-bug-reports:   http://github.com/pjones/themoviedb/issues
+homepage:      https://code.devalot.com/open/themoviedb
+bug-reports:   https://code.devalot.com/open/themoviedb/issues
 license:       MIT
 license-file:  LICENSE
 author:        Peter Jones <pjones@devalot.com>
 maintainer:    Peter Jones <pjones@devalot.com>
-copyright:     Copyright: (c) 2012-2018 Peter Jones
+copyright:     Copyright: (c) 2012-2019 Peter Jones
 category:      Network, API
 stability:     experimental
-tested-with:   GHC == 7.10.3, GHC == 8.0.2, GHC == 8.2.2, GHC == 8.4.1
 build-type:    Simple
 cabal-version: 1.18
 description:   This library provides functions for retrieving metadata
@@ -28,7 +27,7 @@ extra-source-files:
 --------------------------------------------------------------------------------
 source-repository head
   type: git
-  location: git://github.com/pjones/themoviedb.git
+  location: https://code.devalot.com/open/themoviedb.git
 
 --------------------------------------------------------------------------------
 flag maintainer
@@ -108,7 +107,7 @@ test-suite test
 
   build-depends: base
                , bytestring
-               , tasty       >= 0.10 && < 1.2
+               , tasty       >= 0.10 && < 1.3
                , tasty-hunit >= 0.9  && < 0.11
                , text
                , themoviedb

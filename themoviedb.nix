@@ -4,7 +4,7 @@
 }:
 mkDerivation {
   pname = "themoviedb";
-  version = "1.1.5.0";
+  version = "1.1.5.1";
   src = ./.;
   isLibrary = true;
   isExecutable = true;
@@ -18,7 +18,7 @@ mkDerivation {
   testHaskellDepends = [
     base bytestring tasty tasty-hunit text time
   ];
-  homepage = "http://github.com/pjones/themoviedb";
+  homepage = "https://code.devalot.com/open/themoviedb";
   description = "Haskell API bindings for http://themoviedb.org";
   license = stdenv.lib.licenses.mit;
 }
