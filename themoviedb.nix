@@ -4,7 +4,7 @@
 }:
 mkDerivation {
   pname = "themoviedb";
-  version = "1.1.5.1";
+  version = "1.1.5.2";
   src = ./.;
   isLibrary = true;
   isExecutable = true;

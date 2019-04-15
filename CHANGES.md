@@ -1,5 +1,13 @@
 # Version History
 
+## 1.1.5.2 (April 15, 2019)
+
+  - Update version of `http-client`
+
+    - Builds with `http-client` version 0.5.13.1 and 0.6.2
+
+  - Updated the `default.nix` file to select the right version of `http-client`
+
 ## 1.1.5.1 (April 15, 2019)
 
   - Update dependency versions
