@@ -1,0 +1,8 @@
+cradle:
+  cabal:
+    - path: "./"
+      component: "lib:themoviedb"
+    - path: "./test"
+      component: "test"
+    - path: "./example"
+      component: "tmdb"
