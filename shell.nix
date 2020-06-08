@@ -1,2 +1,7 @@
 # Load an interactive environment:
-(import ./. {}).interactive
+{ ghc ? "default"
+}:
+
+(import ./. {
+  inherit ghc;
+}).interactive
