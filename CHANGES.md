@@ -1,5 +1,13 @@
 # Version History
 
+## 1.2.0.0 (July 28, 2020)
+
+  - Removed the `Binary` instance for `Configuration` since the Aeson
+    instances can be used to serialize to binary.
+
+  - Reformatted all code with Ormolu and refactored some bits to
+    remove unnecessary dependencies.
+
 ## 1.1.5.2 (April 15, 2019)
 
   - Update version of `http-client`

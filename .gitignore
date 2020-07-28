@@ -1,3 +1,5 @@
 /dist
 /.stack-work
 /build/.stack-work
+/TAGS
+/result

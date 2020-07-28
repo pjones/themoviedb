@@ -1,21 +1,22 @@
---------------------------------------------------------------------------------
-name:          themoviedb
-version:       1.1.5.2
-synopsis:      Haskell API bindings for http://themoviedb.org
-homepage:      https://code.devalot.com/open/themoviedb
-bug-reports:   https://code.devalot.com/open/themoviedb/issues
-license:       MIT
-license-file:  LICENSE
-author:        Peter Jones <pjones@devalot.com>
-maintainer:    Peter Jones <pjones@devalot.com>
-copyright:     Copyright: (c) 2012-2019 Peter Jones
-category:      Network, API
-stability:     experimental
-build-type:    Simple
-cabal-version: 1.18
-description:   This library provides functions for retrieving metadata
-               from the <http://TheMovieDB.org> API.  Documentation
-               can be found in the "Network.API.TheMovieDB" module.
+cabal-version:      2.2
+name:               themoviedb
+version:            1.2.0.0
+synopsis:           Haskell API bindings for http://themoviedb.org
+homepage:           https://github.com/pjones/themoviedb
+bug-reports:        https://github.com/pjones/themoviedb/issues
+license:            MIT
+license-file:       LICENSE
+author:             Peter Jones <pjones@devalot.com>
+maintainer:         Peter Jones <pjones@devalot.com>
+copyright:          Copyright: (c) 2012-2020 Peter Jones
+category:           Network, API
+stability:          stable
+build-type:         Simple
+tested-with:        GHC ==8.6.5 || ==8.8.4 || ==8.10.1
+description:
+  This library provides functions for retrieving metadata
+  from the <http://TheMovieDB.org> API.  Documentation
+  can be found in the "Network.API.TheMovieDB" module.
 
 --------------------------------------------------------------------------------
 extra-source-files:
@@ -26,17 +27,61 @@ extra-source-files:
 
 --------------------------------------------------------------------------------
 source-repository head
-  type: git
-  location: https://code.devalot.com/open/themoviedb.git
+  type:     git
+  location: https://github.com/pjones/themoviedb.git
 
 --------------------------------------------------------------------------------
 flag maintainer
   description: Enable settings for the package maintainer.
-  manual: True
-  default: False
+  manual:      True
+  default:     False
+
+--------------------------------------------------------------------------------
+common options
+  default-language: Haskell2010
+  ghc-options:
+    -Wall -Wno-name-shadowing -Werror=incomplete-record-updates
+    -Werror=incomplete-uni-patterns -Werror=missing-home-modules
+    -Widentities -Wmissing-export-lists -Wredundant-constraints
+
+  if flag(maintainer)
+    ghc-options: -Werror
+
+--------------------------------------------------------------------------------
+common extensions
+  default-extensions:
+    DeriveAnyClass
+    DeriveGeneric
+    DerivingStrategies
+    GeneralizedNewtypeDeriving
+    LambdaCase
+    MultiParamTypeClasses
+    OverloadedStrings
+    RecordWildCards
+    ScopedTypeVariables
+    TupleSections
+
+--------------------------------------------------------------------------------
+common dependencies
+  build-depends:
+    , aeson            >=1.0    && <1.6
+    , base             >=4.6    && <5.0
+    , http-client      >=0.4.31 && <0.8
+    , http-client-tls  >=0.2.2  && <0.4
+    , http-types       >=0.8    && <0.13
+    , mtl              >=2.1    && <2.3
+    , relude           >=0.6    && <0.8
+    , text             >=0.11   && <1.3
+    , time             >=1.5    && <1.11
+
+  mixins:
+    base hiding (Prelude),
+    relude (Relude as Prelude)
 
 --------------------------------------------------------------------------------
 library
+  import:          options, extensions, dependencies
+  hs-source-dirs:  src
   exposed-modules:
     Network.API.TheMovieDB
     Network.API.TheMovieDB.Actions
@@ -52,63 +97,25 @@ library
     Network.API.TheMovieDB.Types.Season
     Network.API.TheMovieDB.Types.TV
 
-  default-language: Haskell2010
-  hs-source-dirs: src
-  ghc-options: -Wall -fwarn-incomplete-uni-patterns
-
-  if flag(maintainer)
-    ghc-options: -Werror
-
-  build-depends: aeson              >= 0.6    && < 1.5
-               , base               >= 4.6    && < 5.0
-               , binary             >= 0.7    && < 0.11
-               , bytestring         >= 0.9    && < 0.11
-               , http-client        >= 0.4.31 && < 0.7
-               , http-client-tls    >= 0.2.2  && < 0.4
-               , http-types         >= 0.8    && < 0.13
-               , mtl                >= 2.1    && < 2.3
-               , text               >= 0.11   && < 1.3
-               , text-binary        >= 0.1    && < 0.3
-               , time               >= 1.5    && < 1.10
-               , time-locale-compat >= 0.1    && < 0.2
-               , transformers       >= 0.3    && < 0.6
-
 --------------------------------------------------------------------------------
 executable tmdb
-  default-language: Haskell2010
+  import:         options, extensions, dependencies
   hs-source-dirs: example
-  main-is: Main.hs
-
-  ghc-options: -Wall -fwarn-incomplete-uni-patterns
-
-  if flag(maintainer)
-    ghc-options: -Werror
-    ghc-prof-options: -auto-all
-
-  build-depends: base
-               , text
-               , themoviedb
-               , time
-               , time-locale-compat
-               , transformers
+  main-is:        Main.hs
+  build-depends:  themoviedb
 
 --------------------------------------------------------------------------------
 test-suite test
-  type: exitcode-stdio-1.0
-  default-language: Haskell2010
+  import:         options, extensions, dependencies
+  type:           exitcode-stdio-1.0
   hs-source-dirs: test
-  main-is: Main.hs
-  other-modules: TestHelper MovieTest TVTest
+  main-is:        Main.hs
+  other-modules:
+    MovieTest
+    TestHelper
+    TVTest
 
-  ghc-options: -Wall -fwarn-incomplete-uni-patterns
-
-  if flag(maintainer)
-    ghc-options: -Werror
-
-  build-depends: base
-               , bytestring
-               , tasty       >= 0.10 && < 1.3
-               , tasty-hunit >= 0.9  && < 0.11
-               , text
-               , themoviedb
-               , time
+  build-depends:
+    , tasty        >=0.10 && <1.3
+    , tasty-hunit  >=0.9  && <0.11
+    , themoviedb
