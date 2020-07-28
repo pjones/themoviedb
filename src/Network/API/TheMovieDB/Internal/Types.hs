@@ -18,6 +18,7 @@
 module Network.API.TheMovieDB.Internal.Types
   ( ItemID,
     Key,
+    LanguageCode,
     Body,
     Path,
     Error (..),
@@ -31,6 +32,9 @@ type ItemID = Int
 
 -- | Type for the API key issued by TheMovieDB.
 type Key = Text
+
+-- | Type for selecting a TMDb language in ISO 639-1 format.
+type LanguageCode = Text
 
 -- | URL path.
 type Path = String

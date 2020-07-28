@@ -16,6 +16,7 @@ module MovieTest (tests) where
 
 import qualified Data.Text as Text
 import Network.API.TheMovieDB
+import Network.API.TheMovieDB.Internal.HTTP (defaultImagePrefix)
 import Network.API.TheMovieDB.Internal.TheMovieDB
 import Test.Tasty
 import Test.Tasty.HUnit
@@ -31,8 +32,7 @@ testMoviePosterURLs = do
   cfg <- fakeTMDB "test/config-good.json" config
   movie <- fakeTMDB "test/movie-good.json" (fetchMovie 0)
   let urls = moviePosterURLs cfg movie
-      poster = "http://cf2.imgobject.com/t/p/w92/pTpxQB1N0waaSc3OSn0e9oc8kx9.jpg"
-  assertEqual "length" 6 (length urls)
+      poster = defaultImagePrefix <> "w92/pTpxQB1N0waaSc3OSn0e9oc8kx9.jpg"
   assertEqual "url" (Just poster) (viaNonEmpty head urls)
 
 goodMovieFieldsTest :: Assertion

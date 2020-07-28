@@ -28,7 +28,7 @@
 --   let key = "your API key"
 --
 --   -- The 'fetch' function will get a 'Movie' record based on its ID.
---   result <- runTheMovieDB key (fetchMovie 9340)
+--   result <- runTheMovieDB (defaultSettings key) (fetchMovie 9340)
 --
 --   -- Do something with the result (or error).
 --   putStrLn (show result)
@@ -45,7 +45,12 @@ module Network.API.TheMovieDB
     Genre (..),
     Error (..),
     ItemID,
+
+    -- * Library Settings
+    Settings (..),
+    defaultSettings,
     Key,
+    LanguageCode,
 
     -- * API Functions
     TheMovieDB,
@@ -70,6 +75,7 @@ where
 
 import Network.API.TheMovieDB.Actions
 import Network.API.TheMovieDB.Internal.Configuration
+import Network.API.TheMovieDB.Internal.Settings
 import Network.API.TheMovieDB.Internal.TheMovieDB
 import Network.API.TheMovieDB.Internal.Types
 import Network.API.TheMovieDB.Types.Episode

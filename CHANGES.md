@@ -2,6 +2,10 @@
 
 ## 1.2.0.0 (July 28, 2020)
 
+  - New `Settings` type with the ability to set a preferred ISO 639-1
+    language code.  Functions that used to take a `Key` now take a
+    `Settings` value instead.  (#5)
+
   - Removed the `Binary` instance for `Configuration` since the Aeson
     instances can be used to serialize to binary.
 

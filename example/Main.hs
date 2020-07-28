@@ -15,6 +15,7 @@ import qualified Data.Text as T
 import Data.Time (defaultTimeLocale, formatTime)
 import Network.API.TheMovieDB
 import System.Environment (getArgs)
+import System.Environment (lookupEnv)
 import Text.Printf (printf)
 
 -- | Simple banner style printing of a 'Movie'.
@@ -105,9 +106,12 @@ fetchAndPrintFullTV t = do
 main :: IO ()
 main = do
   args <- getArgs
-  let key = maybe T.empty T.pack (listToMaybe args)
+  lang <- lookupEnv "TMDB_LANG"
 
-  result <- runTheMovieDB key $
+  let key = maybe T.empty T.pack (listToMaybe args)
+      settings = Settings key (toText <$> lang)
+
+  result <- runTheMovieDB settings $
     case args of
       [_, "search", query] -> searchAndListMovies (T.pack query)
       [_, "fetch", mid] -> itemID fetchAndPrintMovie mid

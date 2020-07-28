@@ -15,6 +15,7 @@
 module TVTest (tests) where
 
 import Network.API.TheMovieDB
+import Network.API.TheMovieDB.Internal.HTTP (defaultImagePrefix)
 import Test.Tasty
 import Test.Tasty.HUnit
 import TestHelper
@@ -51,10 +52,9 @@ testSeasonPoster = do
   cfg <- fakeTMDB "test/config-good.json" config
   season <- fakeTMDB "test/season-good.json" (fetchTVSeason 0 0)
 
-  let expect = "http://cf2.imgobject.com/t/p/w92/2dxsbVMoxsYH0Pta2mbFjF7mhHr.jpg"
+  let expect = defaultImagePrefix <> "w92/2dxsbVMoxsYH0Pta2mbFjF7mhHr.jpg"
       urls = seasonPosterURLs cfg season
 
-  assertEqual "length" 6 (length urls)
   assertEqual "poster" (Just expect) (viaNonEmpty head urls)
 
 testTVPoster :: Assertion
@@ -62,10 +62,9 @@ testTVPoster = do
   cfg <- fakeTMDB "test/config-good.json" config
   tv <- fakeTMDB "test/tv-good.json" (fetchTV 0)
 
-  let expect = "http://cf2.imgobject.com/t/p/w92/mWNadwBZIx8NyEw4smGftYtHHrE.jpg"
+  let expect = defaultImagePrefix <> "w92/mWNadwBZIx8NyEw4smGftYtHHrE.jpg"
       urls = tvPosterURLs cfg tv
 
-  assertEqual "length" 6 (length urls)
   assertEqual "poster" (Just expect) (viaNonEmpty head urls)
 
 tests :: TestTree
