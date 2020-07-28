@@ -26,6 +26,7 @@ where
 import Control.Monad.Except
 import Data.Aeson
 import Network.API.TheMovieDB.Internal.HTTP
+import Network.API.TheMovieDB.Internal.Settings
 import Network.API.TheMovieDB.Internal.Types
 import Network.HTTP.Client (Manager, newManager)
 import Network.HTTP.Client.TLS (tlsManagerSettings)
@@ -67,15 +68,15 @@ tmdbError = TheMovieDB . throwError
 -- 'tlsManagerSettings'.  If you want to use an existing 'Manager' you
 -- should use 'runTheMovieDBWithManager' instead.
 runTheMovieDB ::
-  -- | The API key to include in all requests.
-  Key ->
+  -- | Library settings.
+  Settings ->
   -- | The API calls to make.
   TheMovieDB a ->
   -- | Response or error.
   IO (Either Error a)
-runTheMovieDB k t = do
+runTheMovieDB s t = do
   m <- newManager tlsManagerSettings
-  runTheMovieDBWithManager m k t
+  runTheMovieDBWithManager m s t
 
 -- | Execute requests for TheMovieDB with the given API key and produce
 -- either an error or a result.
@@ -85,13 +86,13 @@ runTheMovieDB k t = do
 runTheMovieDBWithManager ::
   -- | The 'Manager' to use.
   Manager ->
-  -- | The API key to include in all requests.
-  Key ->
+  -- | Library settings.
+  Settings ->
   -- | The API calls to make.
   TheMovieDB a ->
   -- | Response or error.
   IO (Either Error a)
-runTheMovieDBWithManager m k = runTheMovieDBWithRequestFunction (apiGET m k)
+runTheMovieDBWithManager m s = runTheMovieDBWithRequestFunction (apiGET m s)
 
 -- | Low-level interface for executing a 'TheMovieDB' using the given
 -- request function.

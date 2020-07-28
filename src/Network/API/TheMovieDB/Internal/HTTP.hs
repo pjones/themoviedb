@@ -15,11 +15,14 @@
 --
 -- Simple interface for fetching JSON files from the API via HTTP.
 module Network.API.TheMovieDB.Internal.HTTP
-  ( apiGET,
+  ( apiBaseURL,
+    defaultImagePrefix,
+    apiGET,
   )
 where
 
 import Control.Exception
+import Network.API.TheMovieDB.Internal.Settings
 import Network.API.TheMovieDB.Internal.Types
 import qualified Network.HTTP.Client as HC
 import Network.HTTP.Types
@@ -28,9 +31,13 @@ import Network.HTTP.Types
 apiBaseURL :: String
 apiBaseURL = "https://api.themoviedb.org/3/"
 
+-- | The default image URL prefix.
+defaultImagePrefix :: Text
+defaultImagePrefix = "http://image.tmdb.org/t/p/"
+
 -- | Build a HTTP request that can be used to access the API.
-mkAPIRequest :: Key -> Path -> QueryText -> IO HC.Request
-mkAPIRequest key path params = do
+mkAPIRequest :: Settings -> Path -> QueryText -> IO HC.Request
+mkAPIRequest Settings {..} path params = do
   req <- HC.parseRequest (apiBaseURL ++ path)
 
   return $
@@ -40,13 +47,20 @@ mkAPIRequest key path params = do
       }
   where
     query = renderQuery False . queryTextToQuery $ allParams
-    allParams = params ++ [("api_key", Just key)]
     headers = [("Accept", "application/json")]
+    allParams =
+      params
+        ++ ( second Just
+               <$> catMaybes
+                 [ Just ("api_key", tmdbKey),
+                   ("language",) <$> tmdbLanguage
+                 ]
+           )
 
 -- | Build a URL and do an HTTP GET to TheMovieDB.
-apiGET :: HC.Manager -> Key -> Path -> QueryText -> IO (Either Error Body)
-apiGET manager key path params = do
-  request <- mkAPIRequest key path params
+apiGET :: HC.Manager -> Settings -> Path -> QueryText -> IO (Either Error Body)
+apiGET manager settings path params = do
+  request <- mkAPIRequest settings path params
   response <- catch (Right <$> HC.httpLbs request manager) httpError
 
   return $ case response of
