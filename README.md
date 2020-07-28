@@ -1,25 +1,24 @@
-TheMovieDB API for Haskell
-==========================
+# The Movie Database (TMDb) API for Haskell
 
-This is a simple library that provides functions for retrieving movie
-metadata from [TheMovieDB][] API.  To use this library you need to
-request an API key from TheMovieDB.  Follow the directions on the
+[![CI](https://github.com/pjones/themoviedb/workflows/CI/badge.svg)](https://github.com/pjones/themoviedb/actions)
+[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/pjones/themoviedb?label=release)](https://github.com/pjones/themoviedb/releases)
+[![Hackage](https://img.shields.io/hackage/v/themoviedb)](https://hackage.haskell.org/package/themoviedb)
+
+This is a simple library that provides functions for retrieving
+metadata from the [TMDb][] API.  To use this library you need to
+request an API key from [TMDb][].  Follow the directions on the
 [API][] page.
 
-[TheMovieDB]: http://themoviedb.org
+[TMDb]: http://themoviedb.org
 [API]: http://docs.themoviedb.apiary.io
 
-Documentation
-=============
+## Documentation
 
 See the [Network.API.TheMovieDB][] module for complete documentation.
 
-[Network.API.TheMovieDB]: https://github.com/pjones/themoviedb/blob/master/src/Network/API/TheMovieDB.hs
+[Network.API.TheMovieDB]: https://hackage.haskell.org/package/themoviedb/docs/Network-API-TheMovieDB.html
 
-Example
-=======
+## Example
 
-There's an [example][] application in the `example` directory.
+There's an [example](example/Main.hs) application in the `example` directory.
 Surprising, I know.
-
-[example]: https://github.com/pjones/themoviedb/blob/master/example/Main.hs
