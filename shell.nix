@@ -1,7 +1,8 @@
 # Load an interactive environment:
 { ghc ? "default"
+, nixpkgs ? "nixpkgs"
 }:
 
 (import ./. {
-  inherit ghc;
+  inherit ghc nixpkgs;
 }).interactive
