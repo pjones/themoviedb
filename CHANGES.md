@@ -1,6 +1,6 @@
 # Version History
 
-## 1.2.0.0 (July 28, 2020)
+## 1.2 (July 28, 2020)
 
   - New `Settings` type with the ability to set a preferred ISO 639-1
     language code.  Functions that used to take a `Key` now take a
@@ -11,6 +11,10 @@
 
   - Reformatted all code with Ormolu and refactored some bits to
     remove unnecessary dependencies.
+
+  - Minor updates for dependency bounds:
+
+    - 1.2.0.1 (October 27, 2020)
 
 ## 1.1.5.2 (April 15, 2019)
 

@@ -1,6 +1,6 @@
 cabal-version:      2.2
 name:               themoviedb
-version:            1.2.0.0
+version:            1.2.0.1
 synopsis:           Haskell API bindings for http://themoviedb.org
 homepage:           https://github.com/pjones/themoviedb
 bug-reports:        https://github.com/pjones/themoviedb/issues
@@ -12,7 +12,7 @@ copyright:          Copyright: (c) 2012-2020 Peter Jones
 category:           Network, API
 stability:          stable
 build-type:         Simple
-tested-with:        GHC ==8.6.5 || ==8.8.4 || ==8.10.1
+tested-with:        GHC ==8.6.5 || ==8.8.4 || ==8.10.2
 description:
   This library provides functions for retrieving metadata
   from the <http://TheMovieDB.org> API.  Documentation
@@ -22,7 +22,6 @@ description:
 extra-source-files:
   CHANGES.md
   README.md
-  TODO.org
   test/*.json
 
 --------------------------------------------------------------------------------
@@ -72,7 +71,7 @@ common dependencies
     , mtl              >=2.1    && <2.3
     , relude           >=0.6    && <0.8
     , text             >=0.11   && <1.3
-    , time             >=1.5    && <1.11
+    , time             >=1.5    && <1.12
 
   mixins:
     base hiding (Prelude),
@@ -117,6 +116,6 @@ test-suite test
     TVTest
 
   build-depends:
-    , tasty        >=0.10 && <1.3
+    , tasty        >=0.10 && <1.5
     , tasty-hunit  >=0.9  && <0.11
     , themoviedb
