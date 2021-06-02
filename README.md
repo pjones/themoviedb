@@ -1,6 +1,6 @@
 # The Movie Database (TMDb) API for Haskell
 
-[![CI](https://github.com/pjones/themoviedb/workflows/CI/badge.svg)](https://github.com/pjones/themoviedb/actions)
+[![tests](https://github.com/pjones/themoviedb/workflows/tests/badge.svg)](https://github.com/pjones/themoviedb/actions)
 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/pjones/themoviedb?label=release)](https://github.com/pjones/themoviedb/releases)
 [![Hackage](https://img.shields.io/hackage/v/themoviedb)](https://hackage.haskell.org/package/themoviedb)
 

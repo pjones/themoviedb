@@ -1,6 +1,5 @@
 { sources ? import ./nix/sources.nix
-, nixpkgs ? "nixpkgs"
-, pkgs ? import sources.${nixpkgs} { }
+, pkgs ? import sources.nixpkgs { }
 , nix-hs ? import sources.nix-hs { inherit pkgs; }
 , ghc ? "default"
 }:
@@ -10,9 +9,8 @@ nix-hs {
   compiler = ghc;
 
   overrides = lib: self: super: {
-    relude =
-      if super ? relude_0_6_0_0
-      then super.relude_0_6_0_0 # NixOS 20.03
-      else super.relude;
+    cryptonite = super.cryptonite_0_29;
+    memory = super.memory_0_16_0;
+    relude = super.relude_1_0_0_1;
   };
 }

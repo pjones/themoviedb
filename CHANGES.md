@@ -15,6 +15,7 @@
   - Minor updates for dependency bounds:
 
     - 1.2.0.1 (October 27, 2020)
+    - 1.2.1 (June 2, 2021)
 
 ## 1.1.5.2 (April 15, 2019)
 
