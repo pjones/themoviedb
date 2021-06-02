@@ -14,7 +14,6 @@ module Main (main) where
 import qualified Data.Text as T
 import Data.Time (defaultTimeLocale, formatTime)
 import Network.API.TheMovieDB
-import System.Environment (getArgs, lookupEnv)
 import Text.Printf (printf)
 
 -- | Simple banner style printing of a 'Movie'.
