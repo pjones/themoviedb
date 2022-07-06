@@ -24,7 +24,7 @@ import Network.API.TheMovieDB.Internal.Types
 -- | Settings used by this library.
 data Settings = Settings
   { -- | The API key to use.
-    tmdbKey :: Key,
+    tmdbKey :: Network.API.TheMovieDB.Internal.Types.Key,
     -- | Optional ISO 639-1 language code to send with every request.
     tmdbLanguage :: Maybe LanguageCode
   }
@@ -43,7 +43,7 @@ instance ToJSON Settings where
       ]
 
 -- | Default settings.
-defaultSettings :: Key -> Settings
+defaultSettings :: Network.API.TheMovieDB.Internal.Types.Key -> Settings
 defaultSettings key =
   Settings
     { tmdbKey = key,

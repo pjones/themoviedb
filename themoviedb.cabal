@@ -63,7 +63,7 @@ common extensions
 --------------------------------------------------------------------------------
 common dependencies
   build-depends:
-    , aeson            >=1.0    && <1.6
+    , aeson            >=2.0    && <2.2
     , base             >=4.6    && <5.0
     , http-client      >=0.4.31 && <0.8
     , http-client-tls  >=0.2.2  && <0.4
