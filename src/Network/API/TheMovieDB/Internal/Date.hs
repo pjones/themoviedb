@@ -32,7 +32,7 @@ import Data.Time.Format (defaultTimeLocale)
 newtype Date = Date {day :: Maybe Day} deriving (Eq, Show)
 
 -- | Aeson helper function to parse dates in TheMovieDB API.
-parseDay :: Object -> Text -> Parser (Maybe Day)
+parseDay :: Object -> Key -> Parser (Maybe Day)
 parseDay v key = do
   m <- date
   return (m >>= day)
@@ -41,7 +41,7 @@ parseDay v key = do
     date = v .:? key <|> pure Nothing
 
 -- | Infix alias for 'parseDay'.
-(.::) :: Object -> Text -> Parser (Maybe Day)
+(.::) :: Object -> Key -> Parser (Maybe Day)
 (.::) = parseDay
 
 -- | Parse release dates in JSON.
