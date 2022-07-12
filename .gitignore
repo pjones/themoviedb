@@ -1,6 +1,5 @@
 /dist
 /.stack-work
 /build/.stack-work
-/TAGS
 /result
-/.cabal/
+/.cache/
