@@ -18,32 +18,32 @@ module Network.API.TheMovieDB.Internal.Settings
   )
 where
 
-import Data.Aeson
+import qualified Data.Aeson as Aeson
 import Network.API.TheMovieDB.Internal.Types
 
 -- | Settings used by this library.
 data Settings = Settings
   { -- | The API key to use.
-    tmdbKey :: Network.API.TheMovieDB.Internal.Types.Key,
+    tmdbKey :: Key,
     -- | Optional ISO 639-1 language code to send with every request.
     tmdbLanguage :: Maybe LanguageCode
   }
 
-instance FromJSON Settings where
-  parseJSON = withObject "Settings" $ \v ->
+instance Aeson.FromJSON Settings where
+  parseJSON = Aeson.withObject "Settings" $ \v ->
     Settings
-      <$> v .: "key"
-      <*> v .: "lang"
+      <$> v Aeson..: "key"
+      <*> v Aeson..: "lang"
 
-instance ToJSON Settings where
+instance Aeson.ToJSON Settings where
   toJSON Settings {..} =
-    object
-      [ "key" .= tmdbKey,
-        "lang" .= tmdbLanguage
+    Aeson.object
+      [ "key" Aeson..= tmdbKey,
+        "lang" Aeson..= tmdbLanguage
       ]
 
 -- | Default settings.
-defaultSettings :: Network.API.TheMovieDB.Internal.Types.Key -> Settings
+defaultSettings :: Key -> Settings
 defaultSettings key =
   Settings
     { tmdbKey = key,
